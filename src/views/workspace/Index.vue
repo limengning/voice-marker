@@ -1,10 +1,10 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <audio-list />
+    <el-aside width="200px">
+      <audio-list @select="handleSelect" />
     </el-aside>
     <el-container>
-      <wavesurfer />
+      <wavesurfer ref="wavesurfer" />
     </el-container>
   </el-container>
 </template>
@@ -16,6 +16,11 @@ export default {
   components: {
     Wavesurfer,
     AudioList
+  },
+  methods: {
+    handleSelect(file) {
+      this.$refs.wavesurfer.loadFile(file)
+    }
   }
 }
 </script>

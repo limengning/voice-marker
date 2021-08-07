@@ -3,6 +3,7 @@
     <div ref="waveform"></div>
     <el-button-group>
       <el-button
+        :disabled="!file"
         v-for="m in MODE_ENUM"
         :icon="m.icon"
         :key="m.id"
@@ -16,6 +17,7 @@
 
     <el-table
       :data="regions"
+      :disabled="!file"
       ref="regionTable"
       :default-sort="{ prop: 'start' }"
       @selection-change="handleSelectionChange"
@@ -107,26 +109,24 @@ export default {
   data() {
     return {
       regions: [],
+      file: null,
       regionSelection: [],
       mode: MODE_ENUM.DEFAULT.id,
       MODE_ENUM: MODE_ENUM
     }
-  },
-  loadAudio(src) {
-    wavesurfer.load(src)
-    this.regions = []
-    this.regionSelection = []
-    this.mode = MODE_ENUM.DEFAULT.id
   },
   created() {
     this.$nextTick(() => {
       wavesurfer = WaveSurfer.create({
         container: this.$refs.waveform,
         waveColor: 'violet',
-        progressColor: 'purple',
+        mediaControls: true,
+        height: 256,
         plugins: [WaveSurfer.regions.create({})]
       })
-      wavesurfer.load('/voice/唐诗三百首朗读/02五言乐府036-046/046游子吟.mp3')
+      wavesurfer.on('destroy', () => {
+        wavesurfer = null
+      })
       wavesurfer.on('region-created', (region) => {
         this.handleRegionCreated(slimRegion(region))
       })
@@ -137,6 +137,9 @@ export default {
         this.handleRegionClick(region.id)
       })
     })
+  },
+  unmounted() {
+    this.dispose()
   },
   methods: {
     handleRegionCreated(region) {
@@ -203,6 +206,20 @@ export default {
     handleCommentSave(form) {
       const r = this.regions.find((x) => x.id === form.id)
       r.comment = form.comment
+    },
+    dispose() {
+      if (wavesurfer) {
+        wavesurfer.destroy()
+      }
+    },
+    loadFile(file) {
+      if (!this.file || this.file.src !== file.src) {
+        this.file = file
+        wavesurfer.load(file.src)
+        this.regions = []
+        this.regionSelection = []
+        this.mode = MODE_ENUM.DEFAULT.id
+      }
     }
   }
 }
