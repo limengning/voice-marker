@@ -1,6 +1,6 @@
 <template>
   <el-card header="标注信息">
-    <el-form label-position="left" inline>
+    <el-form label-position="top">
       <el-form-item label="文本">
         <el-input v-model="form.text" v-if="edit"></el-input>
         <span v-else>{{ record.text }}</span>
