@@ -2,7 +2,7 @@
   <div>
     <div ref="waveform"></div>
     <el-radio-group v-model="mode" @change="handleModeChange">
-      <el-radio-button v-for="m in MODE_ENUM" :label="m" :key="m">
+      <el-radio-button v-for="m in MODE_ENUM" :label="m.id" :key="m.id">
       </el-radio-button>
     </el-radio-group>
 
@@ -12,33 +12,51 @@
       @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" width="55"></el-table-column>
-      <el-table-column type="index"></el-table-column>
-      <el-table-column prop="id" label="id" width="180"></el-table-column>
-      <el-table-column prop="start" label="开始" width="180"></el-table-column>
-      <el-table-column prop="end" label="结束" width="180"></el-table-column>
-      <el-table-column label="操作">
+      <el-table-column type="index" label="#"></el-table-column>
+      <el-table-column width="80">
         <template #default="scope">
           <el-button
             v-if="scope.row.locked"
             size="mini"
+            icon="el-icon-lock"
             @click="handleRegionUnLock(scope.row)"
           >
-            解锁
-          </el-button>
-          <el-button v-else size="mini" @click="handleRegionLock(scope.row)">
-            锁定
           </el-button>
           <el-button
-            v-if="!scope.row.locked"
+            v-else
             size="mini"
-            type="danger"
-            @click="handleRegionDelete(scope.row)"
-            >删除</el-button
+            icon="el-icon-unlock"
+            @click="handleRegionLock(scope.row)"
           >
-          <el-button size="mini" @click="handleRegionPlay(scope.row)">
-            播放
           </el-button>
-          <el-input size="mini" v-model="scope.row.text" />
+        </template>
+      </el-table-column>
+      <el-table-column prop="start" label="开始" width="180"></el-table-column>
+      <el-table-column prop="end" label="结束" width="180"></el-table-column>
+      <el-table-column label="操作">
+        <template #default="scope">
+          <el-tooltip class="item" effect="dark" content="播放">
+            <el-button
+              size="mini"
+              icon="el-icon-video-play"
+              @click="handleRegionPlay(scope.row)"
+            >
+            </el-button>
+          </el-tooltip>
+          <el-tooltip
+            v-if="!scope.row.locked"
+            class="item"
+            effect="dark"
+            content="删除"
+          >
+            <el-button
+              size="mini"
+              type="danger"
+              icon="el-icon-delete"
+              @click="handleRegionDelete(scope.row)"
+            >
+            </el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -50,8 +68,8 @@ const WaveSurfer = window.WaveSurfer
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
 const MODE_ENUM = {
-  DEFAULT: '默认模式',
-  REGION: '选区模式'
+  DEFAULT: { text: '默认模式', icon: '', id: 1 },
+  REGION: { text: '选区模式', icon: '', id: 2 }
 }
 const slimRegion = (region) => {
   return {
@@ -68,7 +86,7 @@ export default {
     return {
       regions: [],
       regionSelection: [],
-      mode: MODE_ENUM.DEFAULT,
+      mode: MODE_ENUM.DEFAULT.id,
       MODE_ENUM: MODE_ENUM
     }
   },
@@ -151,7 +169,7 @@ export default {
     },
     handleModeChange(mode) {
       wavesurfer.regions.disableDragSelection()
-      if (mode === MODE_ENUM.REGION) {
+      if (mode === MODE_ENUM.REGION.id) {
         wavesurfer.regions.enableDragSelection({})
       }
     }
