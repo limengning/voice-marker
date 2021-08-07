@@ -1,0 +1,6 @@
+.el-button.active {
+    outline: 0;
+    color: var(--el-color-primary);
+    border-color: var(--el-color-primary-light-7);
+    background-color: var(--el-color-primary-light-9);
+}

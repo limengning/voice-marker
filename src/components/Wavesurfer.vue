@@ -1,10 +1,18 @@
 <template>
   <div>
     <div ref="waveform"></div>
-    <el-radio-group v-model="mode" @change="handleModeChange">
-      <el-radio-button v-for="m in MODE_ENUM" :label="m.id" :key="m.id">
-      </el-radio-button>
-    </el-radio-group>
+    <el-button-group>
+      <el-button
+        v-for="m in MODE_ENUM"
+        :icon="m.icon"
+        :key="m.id"
+        :class="{ active: mode === m.id }"
+        @click="handleModeChange(m.id)"
+        :aria-label="m.text"
+      >
+        {{ m.text }}
+      </el-button>
+    </el-button-group>
 
     <el-table
       :data="regions"
@@ -68,8 +76,8 @@ const WaveSurfer = window.WaveSurfer
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
 const MODE_ENUM = {
-  DEFAULT: { text: '默认模式', icon: '', id: 1 },
-  REGION: { text: '选区模式', icon: '', id: 2 }
+  DEFAULT: { text: '默认模式', icon: 'el-icon-thumb', id: 1 },
+  REGION: { text: '选区模式', icon: 'el-icon-crop', id: 2 }
 }
 const slimRegion = (region) => {
   return {
@@ -168,6 +176,7 @@ export default {
       wavesurfer.regions.list[region.id].play()
     },
     handleModeChange(mode) {
+      this.mode = mode
       wavesurfer.regions.disableDragSelection()
       if (mode === MODE_ENUM.REGION.id) {
         wavesurfer.regions.enableDragSelection({})
