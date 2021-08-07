@@ -112,6 +112,12 @@ export default {
       MODE_ENUM: MODE_ENUM
     }
   },
+  loadAudio(src) {
+    wavesurfer.load(src)
+    this.regions = []
+    this.regionSelection = []
+    this.mode = MODE_ENUM.DEFAULT.id
+  },
   created() {
     this.$nextTick(() => {
       wavesurfer = WaveSurfer.create({
