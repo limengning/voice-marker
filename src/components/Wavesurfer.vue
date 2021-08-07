@@ -1,19 +1,34 @@
 <template>
-  <div>
-    <div ref="waveform"></div>
-    <el-button-group>
-      <el-button
-        :disabled="!file"
-        v-for="m in MODE_ENUM"
-        :icon="m.icon"
-        :key="m.id"
-        :class="{ active: mode === m.id }"
-        @click="handleModeChange(m.id)"
-        :aria-label="m.text"
-      >
-        {{ m.text }}
-      </el-button>
-    </el-button-group>
+  <div style="min-width: 1200px">
+    <el-space v-if="file">
+      <el-button-group>
+        <el-button
+          v-for="m in MODE_ENUM"
+          :icon="m.icon"
+          :key="m.id"
+          :class="{ active: mode === m.id }"
+          @click="handleModeChange(m.id)"
+          :aria-label="m.text"
+        >
+        </el-button>
+      </el-button-group>
+      <el-button-group>
+        <el-button
+          v-if="playing"
+          icon="el-icon-video-pause"
+          @click="handlePlay"
+        >
+        </el-button>
+        <el-button v-else icon="el-icon-video-play" @click="handlePlay">
+        </el-button>
+        <el-button icon="el-icon-close" @click="handleStop"> </el-button>
+      </el-button-group>
+      <label>{{ file.name }}</label>
+    </el-space>
+    <div class="wave-container">
+      <div ref="waveform"></div>
+      <div ref="waveTimeline"></div>
+    </div>
     <region-list ref="regionList"></region-list>
   </div>
 </template>
@@ -30,8 +45,7 @@ const slimRegion = (region) => {
     id: region.id,
     start: region.start,
     end: region.end,
-    locked: false,
-    comment: {}
+    locked: false
   }
 }
 let wavesurfer
@@ -41,11 +55,10 @@ export default {
   },
   data() {
     return {
-      regions: [],
       file: null,
-      regionSelection: [],
       mode: MODE_ENUM.DEFAULT.id,
-      MODE_ENUM: MODE_ENUM
+      MODE_ENUM: MODE_ENUM,
+      playing: false
     }
   },
   created() {
@@ -54,8 +67,13 @@ export default {
         container: this.$refs.waveform,
         waveColor: 'violet',
         mediaControls: true,
-        height: 256,
-        plugins: [WaveSurfer.regions.create({})]
+        height: 128,
+        plugins: [
+          WaveSurfer.regions.create({}),
+          WaveSurfer.timeline.create({
+            container: this.$refs.waveTimeline
+          })
+        ]
       })
       this.$refs.regionList.registWavesurfer(wavesurfer)
       wavesurfer.on('destroy', () => {
@@ -70,12 +88,28 @@ export default {
       wavesurfer.on('region-click', (region) => {
         this.handleRegionClick(region.id)
       })
+      wavesurfer.on('play', () => {
+        this.playing = true
+      })
+      wavesurfer.on('pause', () => {
+        this.playing = false
+      })
     })
   },
   unmounted() {
     this.dispose()
   },
   methods: {
+    loadFile(file) {
+      if (!this.file || this.file.src !== file.src) {
+        this.file = file
+        wavesurfer.load(file.src)
+        wavesurfer.clearRegions()
+        this.mode = MODE_ENUM.DEFAULT.id
+        this.playing = false
+        this.$refs.regionList.clear()
+      }
+    },
     handleRegionClick(id) {
       this.$refs.regionList.toggleSelection(id)
     },
@@ -86,18 +120,19 @@ export default {
         wavesurfer.regions.enableDragSelection({})
       }
     },
+    handlePlay() {
+      if (wavesurfer) {
+        wavesurfer.playPause()
+      }
+    },
+    handleStop() {
+      if (wavesurfer) {
+        wavesurfer.stop()
+      }
+    },
     dispose() {
       if (wavesurfer) {
         wavesurfer.destroy()
-      }
-    },
-    loadFile(file) {
-      if (!this.file || this.file.src !== file.src) {
-        this.file = file
-        wavesurfer.load(file.src)
-        this.regions = []
-        this.regionSelection = []
-        this.mode = MODE_ENUM.DEFAULT.id
       }
     }
   }
@@ -105,4 +140,7 @@ export default {
 </script>
 
 <style>
+.wave-container {
+  margin: 20px auto;
+}
 </style>
