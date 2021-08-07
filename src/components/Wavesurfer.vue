@@ -18,7 +18,6 @@
       :data="regions"
       ref="regionTable"
       @selection-change="handleSelectionChange"
-      empty-text="暂无数据"
       stripe
     >
       <el-table-column type="selection" width="55"></el-table-column>
@@ -43,40 +42,34 @@
       </el-table-column>
       <el-table-column prop="start" label="开始" width="180">
         <template #default="scope">
-          {{ scope.row.start.toFixed(2) }}
+          {{ scope.row.start.toFixed(2) }}s
         </template>
       </el-table-column>
       <el-table-column prop="end" label="结束" width="180">
         <template #default="scope">
-          {{ scope.row.end.toFixed(2) }}
+          {{ scope.row.end.toFixed(2) }}s
         </template></el-table-column
       >
       <el-table-column label="操作">
         <template #default="scope">
-          <el-tooltip class="item" effect="dark" content="播放">
-            <el-button
-              size="mini"
-              plain
-              type="primary"
-              icon="el-icon-video-play"
-              @click="handleRegionPlay(scope.row)"
-            >
-            </el-button>
-          </el-tooltip>
-          <el-tooltip
-            v-if="!scope.row.locked"
-            class="item"
-            effect="dark"
-            content="删除"
+          <el-button
+            size="mini"
+            plain
+            type="primary"
+            icon="el-icon-video-play"
+            @click="handleRegionPlay(scope.row)"
           >
-            <el-button
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-              @click="handleRegionDelete(scope.row)"
-            >
-            </el-button>
-          </el-tooltip>
+          </el-button>
+          <el-popconfirm
+            title="确定删除这段选区吗？"
+            v-if="!scope.row.locked"
+            @confirm="handleRegionDelete(scope.row)"
+          >
+            <template #reference>
+              <el-button size="mini" type="danger" icon="el-icon-delete">
+              </el-button>
+            </template>
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
