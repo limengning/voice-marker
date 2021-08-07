@@ -21,6 +21,11 @@
       stripe
     >
       <el-table-column type="selection" width="55"></el-table-column>
+      <el-table-column type="expand">
+        <template #default="scope">
+          <comment :record="scope.row" @save="handleSave"></comment>
+        </template>
+      </el-table-column>
       <el-table-column type="index" label="#"></el-table-column>
       <el-table-column width="80">
         <template #default="scope">
@@ -46,10 +51,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="end" label="结束" width="180">
-        <template #default="scope">
-          {{ scope.row.end.toFixed(2) }}s
-        </template></el-table-column
-      >
+        <template #default="scope"> {{ scope.row.end.toFixed(2) }}s </template>
+      </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
           <el-button
@@ -73,10 +76,12 @@
         </template>
       </el-table-column>
     </el-table>
+    {{ regions }}
   </div>
 </template>
 
 <script>
+import Comment from './Comment'
 const WaveSurfer = window.WaveSurfer
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
@@ -90,11 +95,14 @@ const slimRegion = (region) => {
     start: region.start,
     end: region.end,
     locked: false,
-    text: ''
+    comment: {}
   }
 }
 let wavesurfer
 export default {
+  components: {
+    Comment
+  },
   data() {
     return {
       regions: [],
@@ -134,7 +142,6 @@ export default {
       this.regions = [...this.regions]
     },
     handleRegionClick(id) {
-      console.log(id)
       this.toggleSelection(id)
     },
     handleRegionLock(region) {
@@ -175,7 +182,6 @@ export default {
           : regionDefaultColor
         wavesurfer.addRegion(region)
       }
-      console.log(wavesurfer.regions.list)
     },
     handleRegionPlay(region) {
       wavesurfer.regions.list[region.id].play()
@@ -186,6 +192,10 @@ export default {
       if (mode === MODE_ENUM.REGION.id) {
         wavesurfer.regions.enableDragSelection({})
       }
+    },
+    handleSave(form) {
+      const r = this.regions.find((x) => x.id === form.id)
+      r.comment = form.comment
     }
   }
 }
