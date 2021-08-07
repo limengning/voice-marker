@@ -1,6 +1,6 @@
 <template>
   <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="200px">
+    <el-aside width="300px">
       <audio-list @select="handleSelect" />
     </el-aside>
     <el-container>

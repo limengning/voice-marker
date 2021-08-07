@@ -1,9 +1,12 @@
 <template>
   <div>
     <el-table :data="files">
-      <el-table-column prop="name" label="文件名" width="180">
+      <el-table-column prop="name" label="文件名">
+        <template #default="scope">
+          <el-link :href="scope.row.src">{{ scope.row.name }}</el-link>
+        </template>
       </el-table-column>
-      <el-table-column label="操作" width="80">
+      <el-table-column label="加载">
         <template #default="scope">
           <el-button
             size="mini"
