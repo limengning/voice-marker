@@ -17,13 +17,14 @@
     <el-table
       :data="regions"
       ref="regionTable"
+      :default-sort="{ prop: 'start' }"
       @selection-change="handleSelectionChange"
       stripe
     >
       <el-table-column type="selection" width="55"></el-table-column>
       <el-table-column type="expand">
         <template #default="scope">
-          <comment :record="scope.row" @save="handleSave"></comment>
+          <comment :record="scope.row" @save="handleCommentSave"></comment>
         </template>
       </el-table-column>
       <el-table-column type="index" label="#"></el-table-column>
@@ -47,11 +48,11 @@
       </el-table-column>
       <el-table-column prop="start" label="开始" width="180">
         <template #default="scope">
-          {{ scope.row.start.toFixed(2) }}s
+          {{ scope.row.start.toFixed(2) }}
         </template>
       </el-table-column>
       <el-table-column prop="end" label="结束" width="180">
-        <template #default="scope"> {{ scope.row.end.toFixed(2) }}s </template>
+        <template #default="scope"> {{ scope.row.end.toFixed(2) }} </template>
       </el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
@@ -193,7 +194,7 @@ export default {
         wavesurfer.regions.enableDragSelection({})
       }
     },
-    handleSave(form) {
+    handleCommentSave(form) {
       const r = this.regions.find((x) => x.id === form.id)
       r.comment = form.comment
     }
