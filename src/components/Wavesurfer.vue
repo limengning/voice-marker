@@ -1,6 +1,11 @@
 <template>
   <div>
     <div ref="waveform"></div>
+    <el-radio-group v-model="mode" @change="handleModeChange">
+      <el-radio-button v-for="m in MODE_ENUM" :label="m" :key="m">
+      </el-radio-button>
+    </el-radio-group>
+
     <el-table
       :data="regions"
       ref="regionTable"
@@ -33,7 +38,7 @@
           <el-button size="mini" @click="handleRegionPlay(scope.row)">
             播放
           </el-button>
-          <el-input v-model="scope.row.text" />
+          <el-input size="mini" v-model="scope.row.text" />
         </template>
       </el-table-column>
     </el-table>
@@ -44,6 +49,10 @@
 const WaveSurfer = window.WaveSurfer
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
+const MODE_ENUM = {
+  DEFAULT: '默认模式',
+  REGION: '选区模式'
+}
 const slimRegion = (region) => {
   return {
     id: region.id,
@@ -58,7 +67,9 @@ export default {
   data() {
     return {
       regions: [],
-      regionSelection: []
+      regionSelection: [],
+      mode: MODE_ENUM.DEFAULT,
+      MODE_ENUM: MODE_ENUM
     }
   },
   created() {
@@ -67,11 +78,7 @@ export default {
         container: this.$refs.waveform,
         waveColor: 'violet',
         progressColor: 'purple',
-        plugins: [
-          WaveSurfer.regions.create({
-            dragSelection: { slop: 5 }
-          })
-        ]
+        plugins: [WaveSurfer.regions.create({})]
       })
       wavesurfer.load('/voice/唐诗三百首朗读/02五言乐府036-046/046游子吟.mp3')
       wavesurfer.on('region-created', (region) => {
@@ -141,6 +148,12 @@ export default {
     },
     handleRegionPlay(region) {
       wavesurfer.regions.list[region.id].play()
+    },
+    handleModeChange(mode) {
+      wavesurfer.regions.disableDragSelection()
+      if (mode === MODE_ENUM.REGION) {
+        wavesurfer.regions.enableDragSelection({})
+      }
     }
   }
 }
