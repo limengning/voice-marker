@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @Api(tags = "项目模块")
 @RestController
 @RequestMapping("/project")
@@ -41,7 +43,7 @@ public class ProjectController {
     @ApiOperation("添加项目")
     @PostMapping("/")
     public Integer add(
-            @RequestBody ProjectEntity req) {
+            @Valid @RequestBody ProjectEntity req) {
         projectService.save(req);
         return req.getId();
     }
@@ -51,7 +53,7 @@ public class ProjectController {
     public void edit(
             @ApiParam(name = "id", value = "项目id", required = true)
             @PathVariable Integer id,
-            @RequestBody ProjectEntity req) {
+            @Valid @RequestBody ProjectEntity req) {
         req.setId(id);
         projectService.updateById(req);
     }
