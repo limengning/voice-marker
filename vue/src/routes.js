@@ -2,7 +2,11 @@ import Workspace from '@/views/workspace/Index'
 
 const routes = [
   { path: '/', redirect: '/workspace' },
-  { path: '/workspace', component: Workspace }
+  {
+    path: '/project/:id/workspace',
+    component: Workspace,
+    props: route => ({ projectId: parseInt(route.params.id) })
+  }
 ]
 
 export default routes

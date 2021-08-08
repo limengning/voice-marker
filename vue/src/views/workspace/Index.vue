@@ -1,7 +1,7 @@
 <template>
-  <el-container style="height: 500px; border: 1px solid #eee">
-    <el-aside width="300px">
-      <audio-list @select="handleSelect" />
+  <el-container style="border: 1px solid #eee">
+    <el-aside width="500px">
+      <audio-list :project-id="projectId" @select="handleSelect" />
     </el-aside>
     <el-container>
       <wavesurfer ref="wavesurfer" />
@@ -13,6 +13,12 @@
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
 export default {
+  props: {
+    projectId: {
+      type: Number,
+      required: true
+    }
+  },
   components: {
     Wavesurfer,
     AudioList

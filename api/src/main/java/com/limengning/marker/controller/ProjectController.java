@@ -14,7 +14,7 @@ import javax.validation.Valid;
 @Api(tags = "项目模块")
 @RestController
 @RequestMapping("/project")
-public class ProjectController {
+public class ProjectController extends BaseController {
 
     private final ProjectService projectService;
 

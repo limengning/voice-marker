@@ -15,7 +15,7 @@ import java.util.List;
 @Api(tags = "文件模块")
 @RestController
 @RequestMapping("/file")
-public class FileController {
+public class FileController extends BaseController {
 
     private final FileService fileService;
 
