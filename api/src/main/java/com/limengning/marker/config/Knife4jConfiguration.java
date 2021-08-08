@@ -14,7 +14,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2WebMvc;
 public class Knife4jConfiguration {
     @Bean(value = "defaultApi2")
     public Docket defaultApi2() {
-        Docket docket=new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(new ApiInfoBuilder()
                         .title("语音标注 API")
                         .description("# 语音标注的后端API文档")
@@ -27,6 +27,5 @@ public class Knife4jConfiguration {
                 .apis(RequestHandlerSelectors.basePackage("com.limengning.marker.controller"))
                 .paths(PathSelectors.any())
                 .build();
-        return docket;
     }
 }

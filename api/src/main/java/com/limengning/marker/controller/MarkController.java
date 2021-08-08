@@ -25,5 +25,6 @@ public class MarkController {
 
     @PostMapping("/")
     public void save(List<MarkEntity> req) {
+        markService.saveBatch(req);
     }
 }

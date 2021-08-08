@@ -1,10 +1,15 @@
 package com.limengning.marker.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.limengning.marker.entity.FileEntity;
+import com.limengning.marker.service.FileService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Api(tags = "文件模块")
@@ -12,23 +17,36 @@ import java.util.List;
 @RequestMapping("/file")
 public class FileController {
 
-    @GetMapping("/")
-    public List<FileEntity> get(@RequestParam Integer projectId) {
-        return null;
+    private final FileService fileService;
+
+    public FileController(FileService fileService){
+        this.fileService = fileService;
     }
 
+    @ApiOperation("获取文件列表")
+    @GetMapping("/")
+    public IPage<FileEntity> get(
+            @RequestParam Integer projectId,
+            @RequestParam(defaultValue = "1") long pageIndex,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        return fileService.page(pageIndex, pageSize, projectId);
+    }
+
+    @ApiOperation("获取单个文件")
     @GetMapping("/{id}")
     public FileEntity getOne(@PathVariable Integer id) {
-        return null;
+        return fileService.getById(id);
     }
 
+    @ApiOperation("上传文件")
     @PostMapping("/")
-    public void save(@RequestPart("file") FilePart filePart) {
-
+    public FileEntity save(@RequestParam("file") MultipartFile file, @RequestParam Integer projectId) throws IOException {
+        return fileService.save(file.getInputStream(), file.getContentType(), file.getOriginalFilename() ,projectId);
     }
 
+    @ApiOperation("删除文件")
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Integer id) {
-
+        fileService.removeById(id);
     }
 }

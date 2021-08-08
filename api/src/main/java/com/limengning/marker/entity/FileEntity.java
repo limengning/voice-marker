@@ -13,7 +13,4 @@ public class FileEntity extends BaseEntity {
     private Integer projectId;
     private String name;
     private String src;
-    private String localPath;
-    private Long size;
-    private Integer duration;
 }

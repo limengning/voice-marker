@@ -28,7 +28,7 @@ public class ProjectController {
     public IPage<ProjectEntity> get(
             @RequestParam(defaultValue = "1") long pageIndex,
             @RequestParam(defaultValue = "10") long pageSize) {
-        IPage<ProjectEntity> page = new Page<>(pageIndex, pageSize);
+        var page = new Page<ProjectEntity>(pageIndex, pageSize);
         return projectService.page(page);
     }
 

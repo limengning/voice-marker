@@ -6,3 +6,13 @@ spring:
     url: jdbc:postgresql://localhost:5432/voice-marker
     username: postgres
     password: FOzVhNc)LIz6b3^Pw~
+
+mybatis-plus:
+  configuration:
+    log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
+
+minio:
+  url: http://localhost:9000
+  accessKey: minio
+  secretKey: wLiIgRc%qiC7~9qca6^
+  bucketName: voice-marker
