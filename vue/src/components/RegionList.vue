@@ -79,6 +79,7 @@
 
 <script>
 import { ElMessage } from 'element-plus'
+import { saveMarks } from '@/api'
 import Comment from './Comment'
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
@@ -167,6 +168,9 @@ export default {
     clear() {
       this.regions = []
       this.record = null
+    },
+    save() {
+      return saveMarks(this.regions)
     }
   }
 }

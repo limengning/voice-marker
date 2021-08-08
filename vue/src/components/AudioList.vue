@@ -1,24 +1,22 @@
 <template>
   <div>
-    <el-upload action="" :before-upload="handleBeforeUpload" :limit="1">
-      <el-button size="small" type="primary">点击上传</el-button>
+    <el-upload
+      action=""
+      :before-upload="handleBeforeUpload"
+      :limit="1"
+      accept="audio/*"
+    >
+      <el-button size="small" type="primary">上传</el-button>
     </el-upload>
-    <el-table :data="files">
-      <el-table-column prop="name" label="文件名">
-        <template #default="scope">
-          <el-link :href="scope.row.src">{{ scope.row.name }}</el-link>
-        </template>
+    <el-table :data="files" stripe size="mini">
+      <el-table-column prop="name" label="文件名" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column label="加载" :width="80">
+      <el-table-column :width="80">
         <template #default="scope">
-          <el-button
-            size="mini"
-            plain
-            type="primary"
-            icon="el-icon-headset"
+          <span
             @click="handleSelect(scope.row)"
-          >
-          </el-button>
+            class="iconfont icon-marker-open"
+          ></span>
         </template>
       </el-table-column>
     </el-table>
@@ -85,4 +83,8 @@ export default {
 </script>
 
 <style>
+.icon-marker-open {
+  cursor: pointer;
+  color: var(--el-color-primary);
+}
 </style>

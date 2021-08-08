@@ -1,29 +1,46 @@
 <template>
   <div style="min-width: 1200px">
     <el-space v-if="file">
+      <label>{{ file.name }}</label>
       <el-button-group>
         <el-button
+          size="mini"
           v-for="m in MODE_ENUM"
-          :icon="m.icon"
           :key="m.id"
           :class="{ active: mode === m.id }"
           @click="handleModeChange(m.id)"
           :aria-label="m.text"
         >
+          <span class="iconfont" :class="m.icon"></span>
         </el-button>
       </el-button-group>
       <el-button-group>
         <el-button
+          size="mini"
           v-if="playing"
           icon="el-icon-video-pause"
           @click="handlePlay"
         >
         </el-button>
-        <el-button v-else icon="el-icon-video-play" @click="handlePlay">
+        <el-button
+          size="mini"
+          v-else
+          icon="el-icon-video-play"
+          @click="handlePlay"
+        >
         </el-button>
-        <el-button icon="el-icon-close" @click="handleStop"> </el-button>
+        <el-button size="mini" @click="handleStop">
+          <span class="iconfont icon-marker-stop"></span>
+        </el-button>
       </el-button-group>
-      <label>{{ file.name }}</label>
+      <el-button-group>
+        <el-button size="mini" @click="handleSave">
+          <span class="iconfont icon-marker-save"></span>
+        </el-button>
+      </el-button-group>
+    </el-space>
+    <el-space v-else>
+      <label>未选择音频文件</label>
     </el-space>
     <div class="wave-container">
       <div ref="waveform"></div>
@@ -34,10 +51,11 @@
 </template>
 
 <script>
+import { ElMessage } from 'element-plus'
 import RegionList from './RegionList'
 const WaveSurfer = window.WaveSurfer
 const MODE_ENUM = {
-  DEFAULT: { text: '默认模式', icon: 'el-icon-thumb', id: 1 },
+  DEFAULT: { text: '默认模式', icon: 'icon-marker-cursor', id: 1 },
   REGION: { text: '选区模式', icon: 'el-icon-crop', id: 2 }
 }
 const slimRegion = (region) => {
@@ -107,7 +125,7 @@ export default {
         wavesurfer.clearRegions()
         this.mode = MODE_ENUM.DEFAULT.id
         this.playing = false
-        this.$refs.regionList.clear()
+        this.$refs.regionList.loadMarks(this.file.id)
       }
     },
     handleRegionClick(id) {
@@ -134,6 +152,11 @@ export default {
       if (wavesurfer) {
         wavesurfer.destroy()
       }
+    },
+    handleSave() {
+      this.$refs.regionList.save().then(() => {
+        ElMessage.success('保存成功')
+      })
     }
   }
 }
