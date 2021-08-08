@@ -37,8 +37,16 @@
         <el-table-column prop="end" label="结束(s)" width="100">
           <template #default="scope"> {{ scope.row.end.toFixed(2) }} </template>
         </el-table-column>
-        <el-table-column label="操作" width="180">
+        <el-table-column label="操作" width="260">
           <template #default="scope">
+            <el-button
+              size="mini"
+              plain
+              type="primary"
+              icon="el-icon-video-play"
+              @click="handleRegionPlay(scope.row.id)"
+            >
+            </el-button>
             <el-button
               size="mini"
               plain
@@ -48,12 +56,12 @@
             >
             </el-button>
             <el-button
+              v-if="!scope.row.locked"
+              @click="handleCommentClear(scope.row)"
               size="mini"
-              plain
-              type="primary"
-              icon="el-icon-video-play"
-              @click="handleRegionPlay(scope.row.id)"
+              type="warn"
             >
+              <span class="iconfont icon-marker-custom-clear"></span>
             </el-button>
             <el-button
               v-if="!scope.row.locked"
@@ -161,8 +169,7 @@ export default {
       if (index === -1) return
       const region = this.regions[index]
       if (region.locked) return
-      if (region.comment && Object.keys(region.comment).length) {
-        console.log(Object.keys(region.comment))
+      if (region.comment) {
         ElMessage.warning({
           message: '存在标注信息不能删除，请先清除标注信息',
           type: 'warning'
@@ -191,9 +198,8 @@ export default {
         r.comment = form.comment
       })
     },
-    clear() {
-      this.regions = []
-      this.record = null
+    handleCommentClear(region) {
+      region.comment = null
     },
     save() {
       return saveMarks(this.regions.map(toRequest))
