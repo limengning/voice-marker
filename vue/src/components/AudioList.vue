@@ -6,25 +6,27 @@
       :limit="1"
       accept="audio/*"
     >
-      <el-button size="small" type="primary">上传</el-button>
+      <el-button size="small" icon="el-icon-upload2" type="primary">
+      </el-button>
     </el-upload>
     <el-table :data="files" stripe size="mini">
       <el-table-column prop="name" label="文件名" show-overflow-tooltip>
       </el-table-column>
-      <el-table-column :width="80">
+      <el-table-column :width="40">
         <template #default="scope">
           <span
             @click="handleSelect(scope.row)"
             class="iconfont icon-marker-open"
-          ></span>
+          >
+          </span>
         </template>
       </el-table-column>
     </el-table>
     <el-pagination
       small
-      :page-size="pager.pageSize"
-      :current-page="pager.pageIndex"
-      layout="prev, next"
+      v-model:page-size="pager.pageSize"
+      v-model:current-page="pager.pageIndex"
+      layout="prev, next, total"
       :total="total"
       @size-change="loadData"
       @current-change="loadData"

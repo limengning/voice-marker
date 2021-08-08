@@ -5,6 +5,7 @@ import com.limengning.marker.entity.FileEntity;
 import com.limengning.marker.service.FileService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,6 +27,7 @@ public class FileController extends BaseController {
     @ApiOperation("获取文件列表")
     @GetMapping("/")
     public IPage<FileEntity> get(
+            @ApiParam("项目id")
             @RequestParam Integer projectId,
             @RequestParam(defaultValue = "1") long pageIndex,
             @RequestParam(defaultValue = "10") long pageSize) {

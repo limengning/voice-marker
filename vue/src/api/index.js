@@ -37,5 +37,5 @@ export function getMarks(fileId) {
 }
 
 export function saveMarks(data) {
-  return request.post('/mark/' + data)
+  return request.post('/mark/', data)
 }
