@@ -79,8 +79,37 @@
 
 <script>
 import { ElMessage } from 'element-plus'
-import { saveMarks } from '@/api'
+import { saveMarks, getMarks } from '@/api'
 import Comment from './Comment'
+
+let fileId
+function slimRegion(region) {
+  return {
+    id: region.id,
+    start: region.start,
+    end: region.end,
+    locked: false
+  }
+}
+function toRequest(region) {
+  return {
+    regionId: region.id,
+    start: region.start,
+    end: region.end,
+    locked: region.locked,
+    fileId: fileId,
+    comment: region.comment ? JSON.stringify(region.comment) : null
+  }
+}
+function fromResponse(region) {
+  return {
+    id: region.regionId,
+    start: region.start,
+    end: region.end,
+    locked: region.locked,
+    comment: region.comment ? JSON.parse(region.comment) : null
+  }
+}
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
 let wavesurfer
@@ -122,15 +151,16 @@ export default {
       }
     },
     handleRegionLock(region) {
-      this.handleRegionLockState(region, true)
+      region.locked = true
+      this.handleRegionLockState(region.id, true)
     },
     handleRegionUnLock(region) {
-      this.handleRegionLockState(region, false)
+      region.locked = false
+      this.handleRegionLockState(region.id, false)
     },
-    handleRegionLockState(region, locked) {
-      region.locked = locked
-      wavesurfer.regions.list[region.id].drag = !locked
-      wavesurfer.regions.list[region.id].resize = !locked
+    handleRegionLockState(regionId, locked) {
+      wavesurfer.regions.list[regionId].drag = !locked
+      wavesurfer.regions.list[regionId].resize = !locked
     },
     handleRegionDelete(id) {
       const index = this.regions.findIndex((x) => x.id === id)
@@ -154,10 +184,13 @@ export default {
       r.comment = form.comment
     },
     handleRegionCreated(region) {
-      if (this.regions.findIndex((x) => x.id === region.id) == -1)
+      region = slimRegion(region)
+      if (this.regions.findIndex((x) => x.id === region.id) == -1) {
         this.regions.push(region)
+      }
     },
     handleRegionUpdateEnd(region) {
+      region = slimRegion(region)
       const index = this.regions.findIndex((x) => x.id === region.id)
       this.regions[index] = region
       this.regions = [...this.regions]
@@ -170,7 +203,21 @@ export default {
       this.record = null
     },
     save() {
-      return saveMarks(this.regions)
+      return saveMarks(this.regions.map(toRequest))
+    },
+    loadMarks(paramFileId) {
+      wavesurfer.clearRegions()
+      this.regions = []
+      fileId = paramFileId
+      getMarks(fileId)
+        .then((resp) => {
+          this.regions = resp.map(fromResponse)
+          for (const r of this.regions) {
+            wavesurfer.addRegion(r)
+            this.handleRegionLockState(r.id, r.locked)
+          }
+        })
+        .catch(() => ElMessage.error('加载标注失败'))
     }
   }
 }

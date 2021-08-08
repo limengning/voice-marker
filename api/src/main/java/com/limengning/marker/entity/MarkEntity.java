@@ -1,5 +1,6 @@
 package com.limengning.marker.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,7 +13,11 @@ import javax.validation.constraints.NotNull;
 public class MarkEntity extends BaseEntity {
     @NotNull
     private Integer fileId;
-    private Integer start;
-    private Integer end;
+    private String regionId;
+    @TableField("start_point")
+    private Float start;
+    @TableField("end_point")
+    private Float end;
     private String comment;
+    private boolean locked;
 }

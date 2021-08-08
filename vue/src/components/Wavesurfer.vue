@@ -37,6 +37,11 @@
         <el-button size="mini" @click="handleSave">
           <span class="iconfont icon-marker-save"></span>
         </el-button>
+        <el-button
+          size="mini"
+          @click="handleLoadMarks"
+          icon="el-icon-refresh"
+        ></el-button>
       </el-button-group>
     </el-space>
     <el-space v-else>
@@ -57,14 +62,6 @@ const WaveSurfer = window.WaveSurfer
 const MODE_ENUM = {
   DEFAULT: { text: '默认模式', icon: 'icon-marker-cursor', id: 1 },
   REGION: { text: '选区模式', icon: 'el-icon-crop', id: 2 }
-}
-const slimRegion = (region) => {
-  return {
-    id: region.id,
-    start: region.start,
-    end: region.end,
-    locked: false
-  }
 }
 let wavesurfer
 export default {
@@ -93,15 +90,14 @@ export default {
           })
         ]
       })
-      this.$refs.regionList.registWavesurfer(wavesurfer)
       wavesurfer.on('destroy', () => {
         wavesurfer = null
       })
       wavesurfer.on('region-created', (region) => {
-        this.$refs.regionList.handleRegionCreated(slimRegion(region))
+        this.$refs.regionList.handleRegionCreated(region)
       })
       wavesurfer.on('region-update-end', (region) => {
-        this.$refs.regionList.handleRegionUpdateEnd(slimRegion(region))
+        this.$refs.regionList.handleRegionUpdateEnd(region)
       })
       wavesurfer.on('region-click', (region) => {
         this.handleRegionClick(region.id)
@@ -112,6 +108,7 @@ export default {
       wavesurfer.on('pause', () => {
         this.playing = false
       })
+      this.$refs.regionList.registWavesurfer(wavesurfer)
     })
   },
   unmounted() {
@@ -122,10 +119,9 @@ export default {
       if (!this.file || this.file.src !== file.src) {
         this.file = file
         wavesurfer.load(file.src)
-        wavesurfer.clearRegions()
         this.mode = MODE_ENUM.DEFAULT.id
         this.playing = false
-        this.$refs.regionList.loadMarks(this.file.id)
+        this.handleLoadMarks()
       }
     },
     handleRegionClick(id) {
@@ -157,6 +153,9 @@ export default {
       this.$refs.regionList.save().then(() => {
         ElMessage.success('保存成功')
       })
+    },
+    handleLoadMarks() {
+      this.$refs.regionList.loadMarks(this.file.id)
     }
   }
 }
