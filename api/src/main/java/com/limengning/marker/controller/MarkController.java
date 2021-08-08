@@ -1,6 +1,6 @@
 package com.limengning.marker.controller;
 
-import com.limengning.marker.entity.Mark;
+import com.limengning.marker.entity.MarkEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -11,12 +11,12 @@ import java.util.List;
 public class MarkController {
 
     @GetMapping("/")
-    public Mono<List<Mark>> get(@RequestParam Integer fileId) {
+    public Mono<List<MarkEntity>> get(@RequestParam Integer fileId) {
         return null;
     }
 
     @PostMapping("/")
-    public Mono<?> save(List<Mark> req) {
+    public Mono<?> save(List<MarkEntity> req) {
         return null;
     }
 }

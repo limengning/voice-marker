@@ -1,8 +1,7 @@
 package com.limengning.marker.controller;
 
-import com.limengning.marker.entity.File;
-import com.limengning.marker.entity.Project;
-import org.springframework.http.codec.multipart.FilePart;
+import com.limengning.marker.entity.FileEntity;
+import com.limengning.marker.entity.ProjectEntity;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
@@ -13,22 +12,22 @@ import java.util.List;
 public class ProjectController {
 
     @GetMapping("/")
-    public Mono<List<Project>> get() {
+    public Mono<List<ProjectEntity>> get() {
         return null;
     }
 
     @GetMapping("/{id}")
-    public Mono<File> getOne(@PathVariable Integer id) {
+    public Mono<FileEntity> getOne(@PathVariable Integer id) {
         return null;
     }
 
     @PostMapping("/")
-    public Mono<File> add(@RequestBody Project req) {
+    public Mono<FileEntity> add(@RequestBody ProjectEntity req) {
         return null;
     }
 
     @PutMapping("/{id}")
-    public Mono<File> edit(@PathVariable Integer id, @RequestBody Project req) {
+    public Mono<FileEntity> edit(@PathVariable Integer id, @RequestBody ProjectEntity req) {
         return null;
     }
 
