@@ -56,12 +56,11 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
 import RegionList from './RegionList'
 const WaveSurfer = window.WaveSurfer
 const MODE_ENUM = {
   DEFAULT: { text: '默认模式', icon: 'icon-marker-cursor', id: 1 },
-  REGION: { text: '选区模式', icon: 'el-icon-crop', id: 2 }
+  REGION: { text: '选区模式', icon: 'icon-marker-select', id: 2 }
 }
 let wavesurfer
 export default {
@@ -151,7 +150,7 @@ export default {
     },
     handleSave() {
       this.$refs.regionList.save().then(() => {
-        ElMessage.success('保存成功')
+        this.$message.success('保存成功')
       })
     },
     handleLoadMarks() {

@@ -15,14 +15,15 @@ public class MarkService extends ServiceImpl<MarkMapper, MarkEntity> {
         return lambdaQuery().eq(MarkEntity::getFileId, fileId).list();
     }
 
-    @Override
-    public boolean saveBatch(Collection<MarkEntity> entityList) {
-        var fileIds = entityList.stream().map(MarkEntity::getFileId).collect(Collectors.toSet());
-        removeByFileIds(fileIds);
-        return super.saveBatch(entityList);
+    public boolean saveBatch(Collection<MarkEntity> entityList, Integer fileId) {
+        removeByFileId(fileId);
+        if (!entityList.isEmpty()) {
+            return super.saveBatch(entityList);
+        }
+        return true;
     }
 
-    private boolean removeByFileIds(Collection<Integer> ids) {
-        return lambdaUpdate().in(MarkEntity::getFileId, ids).remove();
+    private boolean removeByFileId(Integer id) {
+        return lambdaUpdate().eq(MarkEntity::getFileId, id).remove();
     }
 }

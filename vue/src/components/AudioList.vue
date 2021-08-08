@@ -36,7 +36,6 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
 import { getFiles, addFile } from '@/api'
 
 export default {
@@ -76,7 +75,7 @@ export default {
     handleBeforeUpload(file) {
       addFile(file, this.projectId).then((resp) => {
         this.files.push(resp)
-        ElMessage.success('上传成功')
+        this.$message.success('上传成功')
       })
       return false
     }

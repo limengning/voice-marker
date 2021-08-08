@@ -80,7 +80,6 @@
 </template>
 
 <script>
-import { ElMessage } from 'element-plus'
 import { saveMarks, getMarks } from '@/api'
 import Comment from './Comment'
 
@@ -170,7 +169,7 @@ export default {
       const region = this.regions[index]
       if (region.locked) return
       if (region.comment) {
-        ElMessage.warning({
+        this.$message.warning({
           message: '存在标注信息不能删除，请先清除标注信息',
           type: 'warning'
         })
@@ -202,21 +201,22 @@ export default {
       region.comment = null
     },
     save() {
-      return saveMarks(this.regions.map(toRequest))
+      return saveMarks(this.regions.map(toRequest), fileId)
     },
     loadMarks(paramFileId) {
       wavesurfer.clearRegions()
       this.regions = []
       fileId = paramFileId
-      getMarks(fileId)
+      return getMarks(fileId)
         .then((resp) => {
           this.regions = resp.map(fromResponse)
           for (const r of this.regions) {
             wavesurfer.addRegion(r)
             this.handleRegionLockState(r.id, r.locked)
           }
+          this.$message.success('完成标注加载')
         })
-        .catch(() => ElMessage.error('加载标注失败'))
+        .catch(() => this.$message.error('加载标注失败'))
     }
   }
 }
