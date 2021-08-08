@@ -1,6 +1,6 @@
 <template>
   <el-row :gutter="20">
-    <el-col :span="12">
+    <el-col :span="24">
       <el-table
         :data="regions"
         ref="regionTable"
@@ -67,14 +67,8 @@
         </el-table-column>
       </el-table>
     </el-col>
-    <el-col :span="12">
-      <comment
-        v-if="record"
-        :record="record"
-        @save="handleCommentSave"
-      ></comment>
-    </el-col>
   </el-row>
+  <comment ref="marker"></comment>
 </template>
 
 <script>
@@ -179,10 +173,6 @@ export default {
       this.regions.splice(index, 1)
       wavesurfer.regions.list[id].remove()
     },
-    handleCommentSave(form) {
-      const r = this.regions.find((x) => x.id === form.id)
-      r.comment = form.comment
-    },
     handleRegionCreated(region) {
       region = slimRegion(region)
       if (this.regions.findIndex((x) => x.id === region.id) == -1) {
@@ -196,7 +186,10 @@ export default {
       this.regions = [...this.regions]
     },
     handleComment(region) {
-      this.record = region
+      this.$refs.marker.open(region).then((form) => {
+        const r = this.regions.find((x) => x.id === form.id)
+        r.comment = form.comment
+      })
     },
     clear() {
       this.regions = []

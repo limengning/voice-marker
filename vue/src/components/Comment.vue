@@ -1,43 +1,42 @@
 <template>
-  <el-card header="标注信息">
+  <el-drawer
+    title="标注信息"
+    v-model="drawer"
+    :before-close="handleSave"
+    destroy-on-close
+  >
     <el-form label-position="top">
       <el-form-item label="文本">
         <el-input v-model="form.text" v-if="edit"></el-input>
         <span v-else>{{ record.text }}</span>
       </el-form-item>
     </el-form>
-    <el-button @click="handleSave">保存</el-button>
-    <el-button @click="handleClear">清除</el-button>
-  </el-card>
+  </el-drawer>
 </template>
 
 <script>
+let resolve
 export default {
-  props: {
-    record: Object
-  },
-  emits: ['save'],
   data() {
     return {
+      record: null,
+      drawer: false,
       edit: true,
       form: {}
     }
   },
-  created() {
-    this.setFormValue(this.record)
-  },
-  watch: {
-    record(val) {
-      this.setFormValue(val)
-    }
-  },
   methods: {
-    handleSave() {
-      this.$emit('save', { id: this.record.id, comment: this.form })
+    open(record) {
+      this.record = record
+      this.setFormValue(record)
+      this.drawer = true
+      return new Promise((res) => {
+        resolve = res
+      })
     },
-    handleClear() {
-      this.form = {}
-      this.handleSave()
+    handleSave(done) {
+      resolve({ id: this.record.id, comment: this.form })
+      done()
     },
     setFormValue(val) {
       this.form = val ? { ...val.comment } : {}
