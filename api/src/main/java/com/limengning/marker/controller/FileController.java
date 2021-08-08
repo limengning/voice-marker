@@ -3,7 +3,6 @@ package com.limengning.marker.controller;
 import com.limengning.marker.entity.FileEntity;
 import org.springframework.http.codec.multipart.FilePart;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -12,22 +11,22 @@ import java.util.List;
 public class FileController {
 
     @GetMapping("/")
-    public Mono<List<FileEntity>> get(@RequestParam Integer projectId) {
+    public List<FileEntity> get(@RequestParam Integer projectId) {
         return null;
     }
 
     @GetMapping("/{id}")
-    public Mono<FileEntity> getOne(@PathVariable Integer id) {
+    public FileEntity getOne(@PathVariable Integer id) {
         return null;
     }
 
     @PostMapping("/")
-    public Mono<FileEntity> save(@RequestPart("file") FilePart filePart) {
-        return null;
+    public void save(@RequestPart("file") FilePart filePart) {
+
     }
 
     @DeleteMapping("/{id}")
-    public Mono<?> delete(@PathVariable Integer id) {
-        return null;
+    public void delete(@PathVariable Integer id) {
+
     }
 }

@@ -1,38 +1,66 @@
 package com.limengning.marker.controller;
 
-import com.limengning.marker.entity.FileEntity;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.limengning.marker.entity.ProjectEntity;
+import com.limengning.marker.service.ProjectService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
-import reactor.core.publisher.Mono;
 
-import java.util.List;
-
+@Api(tags = "项目模块")
 @RestController
 @RequestMapping("/project")
 public class ProjectController {
 
+    private final ProjectService projectService;
+
+    public ProjectController(ProjectService projectService) {
+
+        this.projectService = projectService;
+    }
+
+    @ApiOperation("获取项目列表")
     @GetMapping("/")
-    public Mono<List<ProjectEntity>> get() {
-        return null;
+    public IPage<ProjectEntity> get(
+            @RequestParam(defaultValue = "1") long pageIndex,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        IPage<ProjectEntity> page = new Page<>(pageIndex, pageSize);
+        return projectService.page(page);
     }
 
+    @ApiOperation("获取单个项目")
     @GetMapping("/{id}")
-    public Mono<FileEntity> getOne(@PathVariable Integer id) {
-        return null;
+    public ProjectEntity getOne(
+            @ApiParam(name = "id", value = "项目id", required = true)
+            @PathVariable Integer id) {
+        return projectService.getById(id);
     }
 
+    @ApiOperation("添加项目")
     @PostMapping("/")
-    public Mono<FileEntity> add(@RequestBody ProjectEntity req) {
-        return null;
+    public Integer add(
+            @RequestBody ProjectEntity req) {
+        projectService.save(req);
+        return req.getId();
     }
 
+    @ApiOperation("修改项目")
     @PutMapping("/{id}")
-    public Mono<FileEntity> edit(@PathVariable Integer id, @RequestBody ProjectEntity req) {
-        return null;
+    public void edit(
+            @ApiParam(name = "id", value = "项目id", required = true)
+            @PathVariable Integer id,
+            @RequestBody ProjectEntity req) {
+        req.setId(id);
+        projectService.updateById(req);
     }
 
+    @ApiOperation("删除项目")
     @DeleteMapping("/{id}")
-    public Mono<?> delete(@PathVariable Integer id) {
-        return null;
+    public void delete(
+            @ApiParam(name = "id", value = "项目id", required = true)
+            @PathVariable Integer id) {
+        projectService.removeById(id);
     }
 }
