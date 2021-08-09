@@ -55,22 +55,36 @@
               @click="handleComment(scope.row)"
             >
             </el-button>
-            <el-button
-              v-if="!scope.row.locked"
-              @click="handleCommentClear(scope.row)"
-              size="mini"
-              type="warn"
-            >
-              <span class="iconfont icon-marker-custom-clear"></span>
-            </el-button>
-            <el-button
-              v-if="!scope.row.locked"
-              @click="handleRegionDelete(scope.row.id)"
-              size="mini"
-              type="danger"
-              icon="el-icon-delete"
-            >
-            </el-button>
+
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                更多<em class="el-icon-arrow-down el-icon--right"></em>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu>
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="!scope.row.locked"
+                      @click="handleCommentClear(scope.row)"
+                      size="mini"
+                      type="text"
+                    >
+                      清除标注
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button
+                      v-if="!scope.row.locked"
+                      @click="handleRegionDelete(scope.row.id)"
+                      size="mini"
+                      type="text"
+                    >
+                      删除
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
           </template>
         </el-table-column>
       </el-table>

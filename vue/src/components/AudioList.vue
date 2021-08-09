@@ -19,6 +19,24 @@
             class="iconfont icon-marker-open"
           >
           </span>
+          <el-dropdown>
+            <span class="el-dropdown-link">
+              更多<em class="el-icon-arrow-down el-icon--right"></em>
+            </span>
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item>
+                  <el-button
+                    @click="handleDelete(scope.row.id)"
+                    size="mini"
+                    type="text"
+                  >
+                    删除
+                  </el-button>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
         </template>
       </el-table-column>
     </el-table>
