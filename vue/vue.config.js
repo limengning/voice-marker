@@ -5,8 +5,5 @@ function resolve(dir) {
 module.exports = {
   devServer: {
     port: 6060
-  },
-  chainWebpack: config => {
-    config.resolve.alias.set('@', resolve('src'))
   }
 }

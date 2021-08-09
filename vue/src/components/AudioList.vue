@@ -91,7 +91,7 @@ export default {
       }
     },
     handleBeforeUpload(file) {
-      addFile(file, this.projectId).then((resp) => {
+      addFile(file, this.projectId).then(resp => {
         this.files.push(resp)
         this.$message.success('上传成功')
       })
