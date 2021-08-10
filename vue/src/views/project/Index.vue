@@ -7,28 +7,30 @@
       <el-table-column prop="name" label="名称"></el-table-column>
       <el-table-column label="操作">
         <template #default="scope">
-          <el-button type="text" @click="handleEnter(scope.row)">
-            进入
-          </el-button>
-          <el-dropdown>
-            <span class="el-dropdown-link">
-              更多<em class="el-icon-arrow-down el-icon--right"></em>
-            </span>
-            <template #dropdown>
-              <el-dropdown-menu
-                ><el-dropdown-item>
-                  <el-button @click="handleEdit(scope.row)" type="text">
-                    编辑
-                  </el-button>
-                </el-dropdown-item>
-                <el-dropdown-item>
-                  <el-button @click="handleDelete(scope.row)" type="text">
-                    删除
-                  </el-button>
-                </el-dropdown-item>
-              </el-dropdown-menu>
-            </template>
-          </el-dropdown>
+          <el-space>
+            <el-button type="text" @click="handleEnter(scope.row)">
+              进入
+            </el-button>
+            <el-dropdown>
+              <span class="el-dropdown-link">
+                更多<em class="el-icon-arrow-down el-icon--right"></em>
+              </span>
+              <template #dropdown>
+                <el-dropdown-menu
+                  ><el-dropdown-item>
+                    <el-button @click="handleEdit(scope.row)" type="text">
+                      编辑
+                    </el-button>
+                  </el-dropdown-item>
+                  <el-dropdown-item>
+                    <el-button @click="handleDelete(scope.row)" type="text">
+                      删除
+                    </el-button>
+                  </el-dropdown-item>
+                </el-dropdown-menu>
+              </template>
+            </el-dropdown>
+          </el-space>
         </template>
       </el-table-column>
     </el-table>
