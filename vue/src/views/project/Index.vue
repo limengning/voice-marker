@@ -67,7 +67,8 @@ export default {
     loadData() {
       const param = { ...this.pager }
       getProjects(param).then(resp => {
-        this.projects = resp
+        this.projects = resp.records
+        this.total = resp.total
       })
     },
     handleAdd() {
