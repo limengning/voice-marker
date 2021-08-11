@@ -10,6 +10,7 @@ spring:
 mybatis-plus:
   configuration:
     log-impl:  org.apache.ibatis.logging.stdout.StdOutImpl
+  type-enums-package: com.limengning.marker.enums
 
 minio:
   url: http://localhost:9000

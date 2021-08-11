@@ -4,6 +4,10 @@ export function getProjects(params) {
   return request.get('/project/', { params })
 }
 
+export function getProject(id) {
+  return request.get('/project/' + id)
+}
+
 export function saveProject(data) {
   if (data.id) {
     return request.put('/project/' + data.id, data)
@@ -40,4 +44,12 @@ export function saveMarks(data, fileId) {
   return request.post('/mark/', data, {
     params: { fileId }
   })
+}
+
+export function getMarkForm(projectId) {
+  return request.get('/markForm', { params: { projectId } })
+}
+
+export function saveMarkForm(data, projectId) {
+  return request.post('/markForm', data, { params: { projectId } })
 }

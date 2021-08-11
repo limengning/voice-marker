@@ -31,12 +31,8 @@
       </el-form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="handleCancel">
-            取 消
-          </el-button>
-          <el-button type="primary" @click="handleOk">
-            确 定
-          </el-button>
+          <el-button @click="handleCancel"> 取 消 </el-button>
+          <el-button type="primary" @click="handleOk"> 确 定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -44,7 +40,7 @@
 </template>
 
 <script>
-import { saveProject } from '@/api'
+import { mapActions } from 'vuex'
 let resolve
 export default {
   data() {
@@ -70,12 +66,13 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['saveProject']),
     open(proj) {
       proj = proj || {}
       this.id = proj.id || null
       this.form = proj
       this.dialogVisible = true
-      return new Promise(res => {
+      return new Promise((res) => {
         resolve = res
       })
     },
@@ -83,11 +80,13 @@ export default {
       this.dialogVisible = false
     },
     handleOk() {
-      this.$refs.form.validate(valid => {
+      this.$refs.form.validate((valid) => {
         if (valid) {
-          saveProject(this.form).then(() => {
-            this.dialogVisible = false
-            resolve()
+          this.saveProject(this.form).then((success) => {
+            if (success) {
+              this.dialogVisible = false
+              resolve()
+            }
           })
         }
       })

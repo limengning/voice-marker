@@ -31,6 +31,6 @@ public class MarkController extends BaseController {
     @ApiOperation("保存标注")
     @PostMapping("/")
     public void save(@RequestBody List<MarkEntity> req, @RequestParam Integer fileId) {
-        markService.saveBatch(req, fileId);
+        markService.save(req, fileId);
     }
 }

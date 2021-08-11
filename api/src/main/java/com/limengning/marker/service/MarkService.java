@@ -14,10 +14,10 @@ public class MarkService extends ServiceImpl<MarkMapper, MarkEntity> {
         return lambdaQuery().eq(MarkEntity::getFileId, fileId).list();
     }
 
-    public boolean saveBatch(Collection<MarkEntity> entityList, Integer fileId) {
+    public boolean save(Collection<MarkEntity> entities, Integer fileId) {
         removeByFileId(fileId);
-        if (!entityList.isEmpty()) {
-            return super.saveBatch(entityList);
+        if (!entities.isEmpty()) {
+            return super.saveBatch(entities);
         }
         return true;
     }

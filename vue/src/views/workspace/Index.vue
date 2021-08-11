@@ -1,7 +1,7 @@
 <template>
   <el-container style="border: 1px solid #eee">
     <el-aside width="500px">
-      <audio-list :project-id="projectId" @select="handleSelect" />
+      <audio-list @select="handleSelect" />
     </el-aside>
     <el-container>
       <wavesurfer ref="wavesurfer" />
