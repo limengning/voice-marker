@@ -13,4 +13,5 @@ public class ProjectEntity extends BaseEntity {
     @NotBlank
     private String name;
     private String description;
+    private Integer markFormId;
 }

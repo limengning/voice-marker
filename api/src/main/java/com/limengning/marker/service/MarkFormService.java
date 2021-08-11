@@ -5,26 +5,27 @@ import com.limengning.marker.entity.MarkFormEntity;
 import com.limengning.marker.mapper.MarkFormMapper;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 @Service
 public class MarkFormService extends ServiceImpl<MarkFormMapper, MarkFormEntity> {
-
-    public List<MarkFormEntity> list(Integer projectId) {
-        return lambdaQuery().eq(MarkFormEntity::getProjectId, projectId).list();
+    public Integer create() {
+        var entity = new MarkFormEntity();
+        save(entity);
+        return entity.getId();
     }
 
-    public void save(Collection<MarkFormEntity> entities, Integer projectId) {
-        removeByProjectId(projectId);
-        if (!entities.isEmpty()) {
-            saveBatch(entities);
+    public List<MarkFormEntity> getNamedForms() {
+        return lambdaQuery().isNotNull(MarkFormEntity::getName).list();
+    }
+
+    public boolean removeUnNamed(Integer id) {
+        if (id == null) {
+            return true;
         }
-    }
-
-    boolean removeByProjectId(Integer projectId) {
         return lambdaUpdate()
-                .eq(MarkFormEntity::getProjectId, projectId)
+                .isNull(MarkFormEntity::getName)
+                .eq(MarkFormEntity::getId, id)
                 .remove();
     }
 }

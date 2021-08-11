@@ -9,11 +9,5 @@ import lombok.Setter;
 @Setter
 @TableName("mark_form")
 public class MarkFormEntity extends BaseEntity {
-    private Integer projectId;
-    private String fieldName;
-    private String fieldDisplayText;
-    private MarkFieldType fieldType;
-    private Boolean required;
-    private String dataSource;
-    private Integer sort;
+    private String name;
 }
