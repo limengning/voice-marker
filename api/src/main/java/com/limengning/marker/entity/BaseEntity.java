@@ -1,8 +1,9 @@
 package com.limengning.marker.entity;
 
-import com.baomidou.mybatisplus.annotation.*;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiParam;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
 import lombok.Getter;
 import lombok.Setter;
 

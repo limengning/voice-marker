@@ -5,18 +5,13 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.limengning.marker.config.MinioConfiguration;
 import com.limengning.marker.entity.FileEntity;
-import com.limengning.marker.entity.ProjectEntity;
 import com.limengning.marker.mapper.FileMapper;
-import io.minio.*;
-import io.minio.errors.MinioException;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
