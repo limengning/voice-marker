@@ -47,7 +47,7 @@
 </template>
 
 <script>
-import { delProject, getProjects } from '@/api'
+import { delProject, getProjects } from '@/api/project'
 import Detail from './Detail'
 export default {
   components: { Detail },
@@ -68,7 +68,7 @@ export default {
   methods: {
     loadData() {
       const param = { ...this.pager }
-      getProjects(param).then(resp => {
+      getProjects(param).then((resp) => {
         this.projects = resp.records
         this.total = resp.total
       })

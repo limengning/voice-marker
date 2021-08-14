@@ -1,4 +1,5 @@
-import { getMarkForm, getProject, saveMarkForm, saveProject } from '@/api'
+import { getProject, saveProject } from '@/api/project'
+import { getMarkForm, saveMarkForm } from '@/api/mark'
 
 const state = () => ({
   project: null,

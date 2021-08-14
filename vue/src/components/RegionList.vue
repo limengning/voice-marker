@@ -94,7 +94,7 @@
 </template>
 
 <script>
-import { saveMarks, getMarks } from '@/api'
+import { saveMarks, getMarks } from '@/api/mark'
 import Comment from './Comment'
 
 let fileId

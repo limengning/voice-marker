@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { getFiles, addFile } from '@/api'
+import { getFiles, addFile } from '@/api/file'
 import { mapGetters } from 'vuex'
 export default {
   computed: {
