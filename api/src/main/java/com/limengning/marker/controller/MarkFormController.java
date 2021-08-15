@@ -45,7 +45,7 @@ public class MarkFormController extends BaseController {
 
     @ApiOperation(value = "保存标注表单设置", notes = "根据项目id保存表单字段设置")
     @PostMapping("/field")
-    public void saveByProject(@RequestBody List<MarkFieldEntity> req, @RequestParam Integer projectId) {
-        markFieldService.saveByProject(req, projectId);
+    public Integer saveByProject(@RequestBody List<MarkFieldEntity> req, @RequestParam Integer projectId) {
+        return markFieldService.saveByProject(req, projectId);
     }
 }

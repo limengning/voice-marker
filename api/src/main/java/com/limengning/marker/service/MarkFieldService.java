@@ -27,12 +27,12 @@ public class MarkFieldService extends ServiceImpl<MarkFieldMapper, MarkFieldEnti
         return lambdaQuery().eq(MarkFieldEntity::getFormId, formId).list();
     }
 
-    public void saveByProject(Collection<MarkFieldEntity> entities, Integer projectId) {
+    public Integer saveByProject(Collection<MarkFieldEntity> entities, Integer projectId) {
         var formId = projectService.getMarkFormId(projectId);
-        if (formId == null) {
-            return;
+        if (formId != null) {
+            saveByForm(entities, formId);
         }
-        saveByForm(entities, formId);
+        return formId;
     }
 
     public void saveByForm(Collection<MarkFieldEntity> entities, Integer formId) {
