@@ -43,4 +43,4 @@ CREATE TABLE public.mark_field (
 ALTER TABLE public.mark_field ADD CONSTRAINT mark_field_fk FOREIGN KEY (form_id) REFERENCES mark_form(id) ON DELETE CASCADE;
 
 -- public.project add mark_form_id column
-ALTER TABLE public.project ADD COLUMN mark_form_id NULL;
+ALTER TABLE public.project ADD COLUMN mark_form_id int4 NULL;
