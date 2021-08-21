@@ -66,7 +66,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions(['saveProject']),
+    ...mapActions('workplace', ['saveProject']),
     open(proj) {
       proj = proj || {}
       this.id = proj.id || null
