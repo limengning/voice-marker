@@ -15,10 +15,10 @@ const routes = [
     name: 'workspace',
     path: '/project/:projectId/workspace',
     component: Workspace,
-    beforeEnter: (to) => {
+    beforeEnter: (to, from, next) => {
       console.log(to.params.projectId)
       store.dispatch('workplace/loadProject', to.params.projectId)
-      return true
+        .then(next)
     }
   }
 ]

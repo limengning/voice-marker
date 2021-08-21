@@ -16,6 +16,9 @@ const getters = {
   },
   projectName: state => {
     return state.project ? state.project.name : ''
+  },
+  project: state => {
+    return state.project
   }
 }
 const actions = {
