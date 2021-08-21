@@ -3,10 +3,12 @@ import workplace from './modules/workspace'
 
 const debug = process.env.NODE_ENV !== 'production'
 
-export default createStore({
+const store =  createStore({
   modules: {
     workplace
   },
   strict: debug,
   plugins: debug ? [createLogger()] : []
 })
+
+export default store

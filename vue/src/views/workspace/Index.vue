@@ -12,13 +12,8 @@
 <script>
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
+
 export default {
-  props: {
-    projectId: {
-      type: Number,
-      required: true
-    }
-  },
   components: {
     Wavesurfer,
     AudioList

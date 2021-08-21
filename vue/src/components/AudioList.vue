@@ -69,7 +69,7 @@ import { getFiles, addFile } from '@/api/file'
 import { mapGetters } from 'vuex'
 export default {
   computed: {
-    ...mapGetters({ projectId: 'workplace.projectId' })
+    ...mapGetters('workplace', { projectId: 'projectId' })
   },
   data() {
     return {

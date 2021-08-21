@@ -1,3 +1,6 @@
+import store from './store'
+
+
 const Project = () => import('@/views/project/Index')
 const Workspace = () => import('@/views/workspace/Index')
 
@@ -10,9 +13,13 @@ const routes = [
   },
   {
     name: 'workspace',
-    path: '/project/:id/workspace',
+    path: '/project/:projectId/workspace',
     component: Workspace,
-    props: route => ({ projectId: parseInt(route.params.id) })
+    beforeEnter: (to) => {
+      console.log(to.params.projectId)
+      store.dispatch('workplace/loadProject', to.params.projectId)
+      return true
+    }
   }
 ]
 

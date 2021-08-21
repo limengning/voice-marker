@@ -23,7 +23,7 @@ public class FileController extends BaseController {
     }
 
     @ApiOperation("获取文件列表")
-    @GetMapping("/")
+    @GetMapping("")
     public IPage<FileEntity> get(
             @ApiParam("项目id")
             @RequestParam Integer projectId,
@@ -39,7 +39,7 @@ public class FileController extends BaseController {
     }
 
     @ApiOperation("上传文件")
-    @PostMapping("/")
+    @PostMapping("")
     public FileEntity save(@RequestParam("file") MultipartFile file, @RequestParam Integer projectId) throws IOException {
         return fileService.save(file.getInputStream(), file.getContentType(), file.getOriginalFilename() ,projectId);
     }

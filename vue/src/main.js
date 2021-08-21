@@ -5,8 +5,8 @@ import 'element-plus/lib/theme-chalk/index.css'
 import './assets/global.css'
 import App from './App.vue'
 
-import routes from './routes'
 import store from './store'
+import routes from './routes'
 
 const router = createRouter({
   history: createWebHistory(),
