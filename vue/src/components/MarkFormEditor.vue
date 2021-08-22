@@ -51,14 +51,14 @@
 <script>
 import { getFields, saveFields, saveFieldsByProject } from '@/api/markForm'
 const fieldTypes = [
-  { label: '文本框', value: 1 },
-  { label: '文本域', value: 2 },
-  { label: '标签', value: 3 },
-  { label: '开关', value: 4 },
-  { label: '单选', value: 5 },
-  { label: '多选', value: 6 },
-  { label: '下拉', value: 7 },
-  { label: '打分', value: 8 }
+  { label: '文本框', value: 'INPUT' },
+  { label: '文本域', value: 'TEXT' },
+  { label: '标签', value: 'TAG' },
+  { label: '开关', value: 'SWITCH' },
+  { label: '单选', value: 'RADIO' },
+  { label: '多选', value: 'CHECKBOX' },
+  { label: '下拉', value: 'SELECT' },
+  { label: '打分', value: 'RATE' }
 ]
 let resolve
 export default {
@@ -85,6 +85,7 @@ export default {
       if (this.project.markFormId) {
         saveFields(this.project.markFormId, this.fields).then(() => {
           resolve(this.project.markFormId)
+          this.$message.success('保存成功')
           this.handleClose()
         })
       } else {

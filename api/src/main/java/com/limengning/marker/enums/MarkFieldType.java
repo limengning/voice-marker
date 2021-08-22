@@ -14,11 +14,10 @@ public enum MarkFieldType implements IEnum<Integer> {
     RATE("打分", 8);
     MarkFieldType(String text, Integer value) {
         this.text = text;
-        this.value = value.toString();
+        this.value = value;
     }
     private String text;
-    @JsonValue
-    private String value;
+    private Integer value;
 
     @Override
     public Integer getValue() {
