@@ -8,7 +8,7 @@
       :close-on-click-modal="false"
       :close-on-press-escape="false"
     >
-      <el-form :model="form" :rules="rules" ref="form">
+      <el-form :model="form" :rules="rules" @submit="handleCommit" ref="form">
         <el-form-item
           label="项目名称"
           :label-width="formLabelWidth"
@@ -32,7 +32,7 @@
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="handleCancel"> 取 消 </el-button>
-          <el-button type="primary" @click="handleOk"> 确 定 </el-button>
+          <el-button type="primary" @click="handleCommit"> 确 定 </el-button>
         </span>
       </template>
     </el-dialog>
@@ -79,7 +79,8 @@ export default {
     handleCancel() {
       this.dialogVisible = false
     },
-    handleOk() {
+    handleCommit(e) {
+      e.preventDefault()
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.saveProject(this.form).then((success) => {
