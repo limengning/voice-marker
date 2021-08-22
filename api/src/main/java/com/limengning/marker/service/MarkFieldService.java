@@ -38,7 +38,10 @@ public class MarkFieldService extends ServiceImpl<MarkFieldMapper, MarkFieldEnti
     public void saveByForm(Collection<MarkFieldEntity> entities, Integer formId) {
         removeFields(formId);
         if (!entities.isEmpty()) {
-            entities.forEach(x -> x.setFormId(formId));
+            entities.forEach(x -> {
+                x.setFormId(formId);
+                x.setId(null);
+            });
             saveBatch(entities);
         }
     }
