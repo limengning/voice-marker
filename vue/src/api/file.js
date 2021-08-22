@@ -12,6 +12,10 @@ export function addFile(file, projectId) {
   })
 }
 
+export function renameFile(id, name) {
+  return request.put('/file/name', { id, name })
+}
+
 export function delFile(id) {
   return request.delete('/file/' + id)
 }

@@ -1,6 +1,7 @@
 package com.limengning.marker.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.limengning.marker.dto.request.FileRenameRequest;
 import com.limengning.marker.entity.FileEntity;
 import com.limengning.marker.service.FileService;
 import io.swagger.annotations.Api;
@@ -42,6 +43,12 @@ public class FileController extends BaseController {
     @PostMapping("")
     public FileEntity save(@RequestParam("file") MultipartFile file, @RequestParam Integer projectId) throws IOException {
         return fileService.save(file.getInputStream(), file.getContentType(), file.getOriginalFilename() ,projectId);
+    }
+
+    @ApiOperation("文件重命名")
+    @PutMapping("/name")
+    public void rename(@RequestBody FileRenameRequest request) {
+        fileService.rename(request.getId(), request.getName());
     }
 
     @ApiOperation("删除文件")

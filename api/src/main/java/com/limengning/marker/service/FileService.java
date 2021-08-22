@@ -86,4 +86,12 @@ public class FileService extends ServiceImpl<FileMapper, FileEntity> {
             throw new RuntimeException("Minio exception: ", ex);
         }
     }
+
+    public void rename(Integer id, String name) {
+        name = getUniqueFileName(id, name);
+        lambdaUpdate()
+                .eq(FileEntity::getId, id)
+                .set(FileEntity::getName, name)
+                .update();
+    }
 }

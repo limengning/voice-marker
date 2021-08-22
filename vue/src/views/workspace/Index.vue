@@ -1,11 +1,17 @@
 <template>
-  <el-container style="border: 1px solid #eee">
-    <h2>项目 - {{this.project.name}}</h2>
-    <el-aside width="500px">
-      <audio-list @select="handleSelect" />
-    </el-aside>
+  <el-container>
+    <el-header> 项目 - {{ this.project.name }} </el-header>
     <el-container>
-      <wavesurfer ref="wavesurfer" />
+      <el-aside width="500px">
+        <el-card>
+          <audio-list @select="handleSelect" />
+        </el-card>
+      </el-aside>
+      <el-main>
+        <el-card>
+          <wavesurfer ref="wavesurfer" />
+        </el-card>
+      </el-main>
     </el-container>
   </el-container>
 </template>
@@ -26,7 +32,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('workplace',['project'])
+    ...mapGetters('workplace', ['project'])
   }
 }
 </script>

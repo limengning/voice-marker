@@ -28,7 +28,7 @@
                 <el-dropdown-menu>
                   <el-dropdown-item>
                     <el-button
-                      @click="handleRename(scope.row)"
+                      @click="handleRename(scope.row, scope.$index)"
                       size="mini"
                       type="text"
                     >
@@ -37,7 +37,7 @@
                   </el-dropdown-item>
                   <el-dropdown-item>
                     <el-button
-                      @click="handleDelete(scope.row.id)"
+                      @click="handleDelete(scope.row.id, scope.$index)"
                       size="mini"
                       type="text"
                     >
@@ -61,13 +61,19 @@
       @current-change="loadData"
     >
     </el-pagination>
+    <rename-dialog ref="rename" />
   </div>
 </template>
 
 <script>
-import { getFiles, addFile } from '@/api/file'
+import RenameDialog from './RenameDialog'
+import { getFiles, addFile, delFile } from '@/api/file'
 import { mapGetters } from 'vuex'
+
 export default {
+  components: {
+    RenameDialog
+  },
   computed: {
     ...mapGetters('workplace', { projectId: 'projectId' })
   },
@@ -104,6 +110,16 @@ export default {
         this.$message.success('上传成功')
       })
       return false
+    },
+    handleRename(row, index) {
+      this.$refs.rename.rename(row.id, row.name).then((name) => {
+        this.files[index].name = name
+      })
+    },
+    handleDelete(id, index) {
+      delFile(id).then(() => {
+        this.files.splice(index, 1)
+      })
     }
   }
 }

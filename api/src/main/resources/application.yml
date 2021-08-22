@@ -6,6 +6,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/voice-marker
     username: postgres
     password: FOzVhNc)LIz6b3^Pw~
+  servlet:
+    multipart:
+      max-file-size: 15MB
 
 mybatis-plus:
   configuration:
