@@ -119,6 +119,7 @@ export default {
     handleDelete(id, index) {
       delFile(id).then(() => {
         this.files.splice(index, 1)
+        this.total = this.total - 1
       })
     }
   }
