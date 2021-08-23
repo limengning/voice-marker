@@ -5,16 +5,18 @@
     :before-close="handleSave"
     destroy-on-close
   >
-    <el-form label-position="top">
-      <el-form-item
-        v-for="field in markFields"
-        :key="field.id"
-        :label="field.fieldDisplayText"
-      >
-        <el-input v-model="form[field.fieldName]" v-if="edit"></el-input>
-        <span v-else>{{ record[field.fieldName] }}</span>
-      </el-form-item>
-    </el-form>
+    <el-card>
+      <el-form label-position="top">
+        <el-form-item
+          v-for="field in markFields"
+          :key="field.id"
+          :label="field.fieldDisplayText"
+        >
+          <el-input v-model="form[field.fieldName]" v-if="edit"></el-input>
+          <span v-else>{{ record[field.fieldName] }}</span>
+        </el-form-item>
+      </el-form>
+    </el-card>
   </el-drawer>
 </template>
 
