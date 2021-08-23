@@ -6,15 +6,20 @@
     destroy-on-close
   >
     <el-form label-position="top">
-      <el-form-item label="文本">
-        <el-input v-model="form.text" v-if="edit"></el-input>
-        <span v-else>{{ record.text }}</span>
+      <el-form-item
+        v-for="field in markFields"
+        :key="field.id"
+        :label="field.fieldDisplayText"
+      >
+        <el-input v-model="form[field.fieldName]" v-if="edit"></el-input>
+        <span v-else>{{ record[field.fieldName] }}</span>
       </el-form-item>
     </el-form>
   </el-drawer>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 let resolve
 export default {
   data() {
@@ -41,6 +46,9 @@ export default {
     setFormValue(val) {
       this.form = val ? { ...val.comment } : {}
     }
+  },
+  computed: {
+    ...mapGetters('workplace', ['markFields'])
   }
 }
 </script>

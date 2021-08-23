@@ -1,15 +1,15 @@
 import { getProject, saveProject } from '@/api/project'
-import { getMarkForm, saveMarkForm } from '@/api/mark'
+import { getMarkFields, saveMarkFields } from '@/api/mark'
 
 const state = () => ({
   project: null,
-  markForm: [],
+  markFields: [],
   audios: []
 })
 
 const getters = {
-  markForm: state => {
-    return state.markForm
+  markFields: state => {
+    return state.markFields
   },
   projectId: state => {
     return state.project ? state.project.id : 0
@@ -26,19 +26,19 @@ const actions = {
     try {
       const project = await getProject(id)
       commit('setProject', project)
-      const markForm = await getMarkForm(id)
-      commit('setMarkForm', markForm)
+      const markFields = await getMarkFields(id)
+      commit('setMarkFields', markFields)
     } catch (e) {
       console.error(e)
       commit('setProject', null)
-      commit('setMarkForm', [])
+      commit('setMarkFields', [])
     }
   },
-  async saveMarkForm({ commit, state }, { markForm, projectId }) {
+  async saveMarkFields({ commit, state }, { markFields, projectId }) {
     try {
-      await saveMarkForm(markForm, projectId)
+      await saveMarkFields(markFields, projectId)
       if (state.project && state.project.id === projectId) {
-        commit('setMarkForm', markForm)
+        commit('setMarkFields', markFields)
       }
     } catch (e) {
       console.error(e)
@@ -62,8 +62,8 @@ const mutations = {
   setProject(state, project) {
     state.project = project
   },
-  setMarkForm(state, markForm) {
-    state.markForm = markForm
+  setMarkFields(state, markFields) {
+    state.markFields = markFields
   }
 }
 export default {

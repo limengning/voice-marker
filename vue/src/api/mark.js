@@ -10,10 +10,10 @@ export function saveMarks(data, fileId) {
   })
 }
 
-export function getMarkForm(projectId) {
+export function getMarkFields(projectId) {
   return request.get('/markForm', { params: { projectId } })
 }
 
-export function saveMarkForm(data, projectId) {
+export function saveMarkFields(data, projectId) {
   return request.post('/markForm', data, { params: { projectId } })
 }
