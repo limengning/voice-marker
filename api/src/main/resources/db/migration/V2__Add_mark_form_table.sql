@@ -11,7 +11,7 @@ CREATE TABLE public.tpl_mark_form (
 	create_by varchar NULL,
 	update_time timestamp(0) NULL,
 	update_by varchar NULL,
-	name varchar NULL,
+	name varchar NOT NULL,
 	CONSTRAINT tpl_mark_form_pk PRIMARY KEY (id)
 );
 

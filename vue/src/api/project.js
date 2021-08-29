@@ -19,3 +19,11 @@ export function saveProject(data) {
 export function delProject(id) {
   return request.delete('/project/' + id)
 }
+
+export function getMarkFields(projectId) {
+  return request.get(`/project/${projectId}/field`)
+}
+
+export function saveMarkFields(data, projectId) {
+  return request.post(`/project/${projectId}/field`, data)
+}

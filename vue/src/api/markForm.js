@@ -11,6 +11,3 @@ export function getFields(formId) {
 export function saveFields(formId, data) {
   return request.post(`/markForm/${formId}/field`, data)
 }
-export function saveFieldsByProject(projectId, data) {
-  return request.post(`/markForm/field`, data, { params: { projectId } })
-}

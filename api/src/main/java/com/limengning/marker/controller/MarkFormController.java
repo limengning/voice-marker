@@ -26,7 +26,7 @@ public class MarkFormController extends BaseController {
     @ApiOperation("获取标注表单设置列表")
     @GetMapping("")
     public List<TplMarkFormEntity> get() {
-        return tplMarkFormService.getNamedForms();
+        return tplMarkFormService.list();
     }
 
     @ApiOperation("获取标注表单字段设置")

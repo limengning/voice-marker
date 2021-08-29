@@ -49,7 +49,7 @@
 </template>
 
 <script>
-import { getFields, saveFields, saveFieldsByProject } from '@/api/markForm'
+import { getMarkFields, saveMarkFields } from '@/api/project'
 const fieldTypes = [
   { label: '文本框', value: 'INPUT' },
   { label: '文本域', value: 'TEXT' },
@@ -71,26 +71,17 @@ export default {
     open(project) {
       this.dialogVisible = true
       this.project = project
-      if (project.markFormId) {
-        getFields(project.markFormId).then((resp) => (this.fields = resp))
-      }
+      getMarkFields(project.id).then((resp) => (this.fields = resp))
       return new Promise((res) => {
         resolve = res
       })
     },
     handleSave() {
-      if (this.project.markFormId) {
-        saveFields(this.project.markFormId, this.fields).then(() => {
-          resolve(this.project.markFormId)
-          this.$message.success('保存成功')
-          this.handleClose()
-        })
-      } else {
-        saveFieldsByProject(this.project.id, this.fields).then((id) => {
-          resolve(id)
-          this.handleClose()
-        })
-      }
+      saveMarkFields(this.project.id, this.fields).then(() => {
+        this.$message.success('保存成功')
+        this.handleClose()
+        resolve()
+      })
     },
     handleClose() {
       this.dialogVisible = false
