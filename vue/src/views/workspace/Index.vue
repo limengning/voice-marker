@@ -10,17 +10,16 @@
       </el-container>
     </el-aside>
     <el-main>
-      <el-tabs
-        v-model="openedFile"
-        type="card"
-        closable
-        @tab-remove="handleFilesRemove"
-      >
+      <el-tabs v-model="openedTab" type="card" @tab-remove="handleFilesRemove">
+        <el-tab-pane label="主页" :name="homeTabName" :closable="false">
+          <home />
+        </el-tab-pane>
         <el-tab-pane
           v-for="file in files"
           :key="file.id"
           :label="file.name"
           :name="getTabName(file)"
+          closable
         >
           <wavesurfer ref="wavesurfer" :file="file" />
         </el-tab-pane>
@@ -34,18 +33,23 @@
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
 import MarkFormEditor from '@/components/MarkFormEditor.vue'
+import Home from './Home'
 import { mapGetters, mapMutations } from 'vuex'
+
+const HOME_TAB_NAME = 'home'
 
 export default {
   components: {
     Wavesurfer,
     AudioList,
-    MarkFormEditor
+    MarkFormEditor,
+    Home
   },
   data() {
     return {
       files: [],
-      openedFile: ''
+      homeTabName: HOME_TAB_NAME,
+      openedTab: HOME_TAB_NAME
     }
   },
   methods: {
@@ -56,12 +60,11 @@ export default {
     handleSelect(file) {
       const index = this.files.findIndex((f) => f.id === file.id)
       if (index !== -1) {
-        this.openedFile = this.getTabName(this.files[index])
+        this.openedTab = this.getTabName(this.files[index])
       } else {
         this.files.push(file)
-        this.openedFile = this.getTabName(file)
+        this.openedTab = this.getTabName(file)
       }
-      console.log(this.files)
     },
     handleTemplate() {
       this.$refs.formEditor.open(this.project).then((fields) => {
@@ -72,12 +75,17 @@ export default {
       const index = this.files.findIndex((f) => this.getTabName(f) === name)
       if (index !== -1) {
         this.files.splice(index, 1)
-        console.log(this.files)
+        if (this.files.length === 0) {
+          this.openedTab = HOME_TAB_NAME
+        }
       }
     }
   },
   computed: {
-    ...mapGetters('workplace', ['project'])
+    ...mapGetters('workplace', ['project']),
+    tabs() {
+      return [{}, this.files]
+    }
   }
 }
 </script>
