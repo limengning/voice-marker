@@ -20,7 +20,7 @@
           v-for="file in files"
           :key="file.id"
           :label="file.name"
-          :name="file.name"
+          :name="getTabName(file)"
         >
           <wavesurfer ref="wavesurfer" :file="file" />
         </el-tab-pane>
@@ -49,14 +49,17 @@ export default {
     }
   },
   methods: {
+    getTabName(file) {
+      return 'file' + file.id
+    },
     ...mapMutations('workplace', ['setMarkFields']),
     handleSelect(file) {
       const index = this.files.findIndex((f) => f.id === file.id)
       if (index !== -1) {
-        this.openedFile = this.files[index].name
+        this.openedFile = this.getTabName(this.files[index])
       } else {
         this.files.push(file)
-        this.openedFile = file.name
+        this.openedFile = this.getTabName(file)
       }
       console.log(this.files)
     },
@@ -66,7 +69,7 @@ export default {
       })
     },
     handleFilesRemove(name) {
-      const index = this.files.findIndex((f) => f.name === name)
+      const index = this.files.findIndex((f) => this.getTabName(f) === name)
       if (index !== -1) {
         this.files.splice(index, 1)
         console.log(this.files)

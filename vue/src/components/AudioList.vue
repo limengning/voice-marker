@@ -10,9 +10,14 @@
       </el-button>
     </el-upload>
     <el-table :data="files" stripe size="mini">
-      <el-table-column prop="name" label="文件名" show-overflow-tooltip>
+      <el-table-column
+        :width="220"
+        prop="name"
+        label="文件名"
+        show-overflow-tooltip
+      >
         <template #default="scope">
-          <el-button type="text" @click="handleSelect(scope.row)">
+          <el-button size="mini" type="text" @click="handleSelect(scope.row)">
             {{ scope.row.name }}
           </el-button>
         </template>
