@@ -127,23 +127,24 @@ function fromResponse(region) {
 }
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
 const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
-let wavesurfer
+
 export default {
   components: {
     Comment
   },
   data() {
     return {
+      wavesurfer: null,
       regions: [],
       record: null
     }
   },
   methods: {
     registWavesurfer(ws) {
-      wavesurfer = ws
+      this.wavesurfer = ws
     },
     handleRegionPlay(id) {
-      wavesurfer.regions.list[id].play()
+      this.wavesurfer.regions.list[id].play()
     },
     toggleSelection(id) {
       if (id) {
@@ -156,13 +157,13 @@ export default {
     handleSelectionChange(val) {
       const selectIds = val.map((x) => x.id)
       this.$emit('selectionChange', selectIds)
-      for (const id in wavesurfer.regions.list) {
-        const region = wavesurfer.regions.list[id]
+      for (const id in this.wavesurfer.regions.list) {
+        const region = this.wavesurfer.regions.list[id]
         region.remove()
         region.color = selectIds.includes(id)
           ? regionSelectColor
           : regionDefaultColor
-        wavesurfer.addRegion(region)
+        this.wavesurfer.addRegion(region)
       }
     },
     handleRegionLock(region) {
@@ -174,8 +175,8 @@ export default {
       this.handleRegionLockState(region.id, false)
     },
     handleRegionLockState(regionId, locked) {
-      wavesurfer.regions.list[regionId].drag = !locked
-      wavesurfer.regions.list[regionId].resize = !locked
+      this.wavesurfer.regions.list[regionId].drag = !locked
+      this.wavesurfer.regions.list[regionId].resize = !locked
     },
     handleRegionDelete(id) {
       const index = this.regions.findIndex((x) => x.id === id)
@@ -191,7 +192,7 @@ export default {
       }
       if (this.record && this.record.id === region.id) this.record = null
       this.regions.splice(index, 1)
-      wavesurfer.regions.list[id].remove()
+      this.wavesurfer.regions.list[id].remove()
     },
     handleRegionCreated(region) {
       region = slimRegion(region)
@@ -218,17 +219,16 @@ export default {
       return saveMarks(this.regions.map(toRequest), fileId)
     },
     loadMarks(paramFileId) {
-      wavesurfer.clearRegions()
+      this.wavesurfer.clearRegions()
       this.regions = []
       fileId = paramFileId
       return getMarks(fileId)
         .then((resp) => {
           this.regions = resp.map(fromResponse)
           for (const r of this.regions) {
-            wavesurfer.addRegion(r)
+            this.wavesurfer.addRegion(r)
             this.handleRegionLockState(r.id, r.locked)
           }
-          this.$message.success('完成标注加载')
         })
         .catch(() => this.$message.error('加载标注失败'))
     }

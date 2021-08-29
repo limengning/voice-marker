@@ -79,7 +79,6 @@ export default {
   },
   data() {
     return {
-      selected: null,
       pager: {
         pageSize: 20,
         pageIndex: 1
@@ -99,10 +98,7 @@ export default {
       this.total = resp.total
     },
     handleSelect(file) {
-      if (this.selected !== file.id) {
-        this.selected = file.id
-        this.$emit('select', file)
-      }
+      this.$emit('select', file)
     },
     handleBeforeUpload(file) {
       addFile(file, this.projectId).then((resp) => {

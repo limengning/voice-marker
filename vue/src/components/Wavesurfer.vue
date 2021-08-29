@@ -1,7 +1,6 @@
 <template>
   <div style="min-width: 1200px">
     <el-space v-if="file">
-      <label>{{ file.name }}</label>
       <el-button-group>
         <el-button
           size="mini"
@@ -62,14 +61,20 @@ const MODE_ENUM = {
   DEFAULT: { text: '默认模式', icon: 'icon-marker-cursor', id: 1 },
   REGION: { text: '选区模式', icon: 'icon-marker-select', id: 2 }
 }
-let wavesurfer
+
 export default {
   components: {
     RegionList
   },
+  props: {
+    file: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
-      file: null,
+      wavesurfer: null,
       mode: MODE_ENUM.DEFAULT.id,
       MODE_ENUM: MODE_ENUM,
       playing: false
@@ -77,7 +82,7 @@ export default {
   },
   created() {
     this.$nextTick(() => {
-      wavesurfer = WaveSurfer.create({
+      this.wavesurfer = WaveSurfer.create({
         container: this.$refs.waveform,
         waveColor: 'violet',
         mediaControls: true,
@@ -89,63 +94,61 @@ export default {
           })
         ]
       })
-      wavesurfer.on('destroy', () => {
-        wavesurfer = null
+      this.wavesurfer.on('destroy', () => {
+        this.wavesurfer = null
       })
-      wavesurfer.on('region-created', (region) => {
+      this.wavesurfer.on('region-created', (region) => {
         this.$refs.regionList.handleRegionCreated(region)
       })
-      wavesurfer.on('region-update-end', (region) => {
+      this.wavesurfer.on('region-update-end', (region) => {
         this.$refs.regionList.handleRegionUpdateEnd(region)
       })
-      wavesurfer.on('region-click', (region) => {
+      this.wavesurfer.on('region-click', (region) => {
         this.handleRegionClick(region.id)
       })
-      wavesurfer.on('play', () => {
+      this.wavesurfer.on('play', () => {
         this.playing = true
       })
-      wavesurfer.on('pause', () => {
+      this.wavesurfer.on('pause', () => {
         this.playing = false
       })
-      this.$refs.regionList.registWavesurfer(wavesurfer)
+      this.$refs.regionList.registWavesurfer(this.wavesurfer)
+      this.loadFile()
     })
   },
   unmounted() {
     this.dispose()
   },
   methods: {
-    loadFile(file) {
-      if (!this.file || this.file.src !== file.src) {
-        this.file = file
-        wavesurfer.load(file.src)
-        this.mode = MODE_ENUM.DEFAULT.id
-        this.playing = false
-        this.handleLoadMarks()
-      }
+    loadFile() {
+      this.wavesurfer.load(this.file.src)
+      this.mode = MODE_ENUM.DEFAULT.id
+      this.playing = false
+      this.handleLoadMarks()
     },
     handleRegionClick(id) {
       this.$refs.regionList.toggleSelection(id)
     },
     handleModeChange(mode) {
       this.mode = mode
-      wavesurfer.regions.disableDragSelection()
+      this.wavesurfer.regions.disableDragSelection()
       if (mode === MODE_ENUM.REGION.id) {
-        wavesurfer.regions.enableDragSelection({})
+        this.wavesurfer.regions.enableDragSelection({})
       }
     },
     handlePlay() {
-      if (wavesurfer) {
-        wavesurfer.playPause()
+      if (this.wavesurfer) {
+        this.wavesurfer.playPause()
       }
     },
     handleStop() {
-      if (wavesurfer) {
-        wavesurfer.stop()
+      if (this.wavesurfer) {
+        this.wavesurfer.stop()
       }
     },
     dispose() {
-      if (wavesurfer) {
-        wavesurfer.destroy()
+      if (this.wavesurfer) {
+        this.wavesurfer.destroy()
       }
     },
     handleSave() {

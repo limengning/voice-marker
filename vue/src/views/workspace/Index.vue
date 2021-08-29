@@ -1,21 +1,31 @@
 <template>
   <el-container>
-    <el-header>
-      项目 - {{ this.project.name }}
-      <el-button @click="handleTemplate">设置标注项</el-button>
-    </el-header>
-    <el-container>
-      <el-aside width="500px">
-        <el-card>
-          <audio-list @select="handleSelect" />
-        </el-card>
-      </el-aside>
-      <el-main>
-        <el-card>
-          <wavesurfer ref="wavesurfer" />
-        </el-card>
-      </el-main>
-    </el-container>
+    <el-aside width="300px">
+      <el-header>
+        项目 - {{ this.project.name }}
+        <el-button @click="handleTemplate">设置标注项</el-button>
+      </el-header>
+      <el-container>
+        <audio-list @select="handleSelect" />
+      </el-container>
+    </el-aside>
+    <el-main>
+      <el-tabs
+        v-model="openedFile"
+        type="card"
+        closable
+        @tab-remove="handleFilesRemove"
+      >
+        <el-tab-pane
+          v-for="file in files"
+          :key="file.id"
+          :label="file.name"
+          :name="file.name"
+        >
+          <wavesurfer ref="wavesurfer" :file="file" />
+        </el-tab-pane>
+      </el-tabs>
+    </el-main>
     <mark-form-editor ref="formEditor" />
   </el-container>
 </template>
@@ -32,15 +42,35 @@ export default {
     AudioList,
     MarkFormEditor
   },
+  data() {
+    return {
+      files: [],
+      openedFile: ''
+    }
+  },
   methods: {
     ...mapMutations('workplace', ['setMarkFields']),
     handleSelect(file) {
-      this.$refs.wavesurfer.loadFile(file)
+      const index = this.files.findIndex((f) => f.id === file.id)
+      if (index !== -1) {
+        this.openedFile = this.files[index].name
+      } else {
+        this.files.push(file)
+        this.openedFile = file.name
+      }
+      console.log(this.files)
     },
     handleTemplate() {
       this.$refs.formEditor.open(this.project).then((fields) => {
         this.setMarkFields(fields)
       })
+    },
+    handleFilesRemove(name) {
+      const index = this.files.findIndex((f) => f.name === name)
+      if (index !== -1) {
+        this.files.splice(index, 1)
+        console.log(this.files)
+      }
     }
   },
   computed: {
