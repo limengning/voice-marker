@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@TableName("mark_form")
-public class MarkFormEntity extends BaseEntity {
+@TableName("tpl_mark_form")
+public class TplMarkFormEntity extends BaseEntity {
     private String name;
 }

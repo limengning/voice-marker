@@ -1,9 +1,9 @@
 package com.limengning.marker.controller;
 
-import com.limengning.marker.entity.MarkFieldEntity;
-import com.limengning.marker.entity.MarkFormEntity;
-import com.limengning.marker.service.MarkFieldService;
-import com.limengning.marker.service.MarkFormService;
+import com.limengning.marker.entity.TplMarkFieldEntity;
+import com.limengning.marker.entity.TplMarkFormEntity;
+import com.limengning.marker.service.TplMarkFieldService;
+import com.limengning.marker.service.TplMarkFormService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -15,37 +15,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/markForm")
 public class MarkFormController extends BaseController {
-    private final MarkFormService markFormService;
-    private final MarkFieldService markFieldService;
+    private final TplMarkFormService tplMarkFormService;
+    private final TplMarkFieldService tplMarkFieldService;
 
-    public MarkFormController(MarkFormService markFormService, MarkFieldService markFieldService) {
-        this.markFormService = markFormService;
-        this.markFieldService = markFieldService;
+    public MarkFormController(TplMarkFormService tplMarkFormService, TplMarkFieldService tplMarkFieldService) {
+        this.tplMarkFormService = tplMarkFormService;
+        this.tplMarkFieldService = tplMarkFieldService;
     }
 
     @ApiOperation("获取标注表单设置列表")
     @GetMapping("")
-    public List<MarkFormEntity> get() {
-        return markFormService.getNamedForms();
+    public List<TplMarkFormEntity> get() {
+        return tplMarkFormService.getNamedForms();
     }
 
     @ApiOperation("获取标注表单字段设置")
     @GetMapping("/{formId}/field")
-    public List<MarkFieldEntity> get(
+    public List<TplMarkFieldEntity> get(
             @ApiParam("表单id")
             @PathVariable Integer formId) {
-        return markFieldService.getFields(formId);
+        return tplMarkFieldService.getFields(formId);
     }
 
     @ApiOperation(value = "保存标注表单设置", notes = "根据表单id保存表单字段设置")
     @PostMapping("/{formId}/field")
-    public void saveByForm(@RequestBody List<MarkFieldEntity> req, @PathVariable Integer formId) {
-        markFieldService.saveByForm(req, formId);
+    public void saveByForm(@RequestBody List<TplMarkFieldEntity> req, @PathVariable Integer formId) {
+        tplMarkFieldService.save(req, formId);
     }
 
-    @ApiOperation(value = "保存标注表单设置", notes = "根据项目id保存表单字段设置")
-    @PostMapping("/field")
-    public Integer saveByProject(@RequestBody List<MarkFieldEntity> req, @RequestParam Integer projectId) {
-        return markFieldService.saveByProject(req, projectId);
-    }
 }

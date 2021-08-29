@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@TableName("mark_field")
-public class MarkFieldEntity extends BaseEntity {
-    private Integer projectId;
+@TableName("tpl_mark_field")
+public class TplMarkFieldEntity extends BaseEntity {
+    private Integer formId;
     private String fieldName;
     private String fieldDisplayText;
     private MarkFieldType fieldType;

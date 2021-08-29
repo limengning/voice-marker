@@ -2,7 +2,9 @@ package com.limengning.marker.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.limengning.marker.entity.MarkFieldEntity;
 import com.limengning.marker.entity.ProjectEntity;
+import com.limengning.marker.service.MarkFieldService;
 import com.limengning.marker.service.ProjectService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,6 +12,8 @@ import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
+import java.util.List;
 
 @Api(tags = "项目模块")
 @RestController
@@ -17,10 +21,12 @@ import javax.validation.Valid;
 public class ProjectController extends BaseController {
 
     private final ProjectService projectService;
+    private final MarkFieldService markFieldService;
 
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, MarkFieldService markFieldService) {
 
         this.projectService = projectService;
+        this.markFieldService = markFieldService;
     }
 
     @ApiOperation("获取项目列表")
@@ -64,5 +70,17 @@ public class ProjectController extends BaseController {
             @ApiParam(name = "id", value = "项目id", required = true)
             @PathVariable Integer id) {
         projectService.removeById(id);
+    }
+
+    @ApiOperation(value = "保存标注项设置", notes = "保存项目的保存标注项设置")
+    @GetMapping("/{projectId}/field")
+    public List<MarkFieldEntity> getMarkFields(@PathVariable Integer projectId) {
+        return markFieldService.getFields(projectId);
+    }
+
+    @ApiOperation(value = "保存标注项设置", notes = "保存项目的保存标注项设置")
+    @PostMapping("/{projectId}/field")
+    public void saveMarkFields(@RequestBody List<MarkFieldEntity> req, @PathVariable Integer projectId) {
+        markFieldService.save(req, projectId);
     }
 }

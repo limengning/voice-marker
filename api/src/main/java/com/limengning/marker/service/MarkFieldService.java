@@ -2,10 +2,7 @@ package com.limengning.marker.service;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.limengning.marker.entity.MarkFieldEntity;
-import com.limengning.marker.entity.MarkFormEntity;
 import com.limengning.marker.mapper.MarkFieldMapper;
-import com.limengning.marker.mapper.MarkFormMapper;
-import com.limengning.marker.mapper.ProjectMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.Collection;
@@ -15,40 +12,32 @@ import java.util.List;
 public class MarkFieldService extends ServiceImpl<MarkFieldMapper, MarkFieldEntity> {
 
     private final ProjectService projectService;
-    private final MarkFormService markFormService;
+    private final TplMarkFormService tplMarkFormService;
 
 
-    public MarkFieldService(ProjectService projectService, MarkFormService markFormService) {
+    public MarkFieldService(ProjectService projectService, TplMarkFormService tplMarkFormService) {
         this.projectService = projectService;
-        this.markFormService = markFormService;
+        this.tplMarkFormService = tplMarkFormService;
     }
 
-    public List<MarkFieldEntity> getFields(Integer formId) {
-        return lambdaQuery().eq(MarkFieldEntity::getFormId, formId).list();
+    public List<MarkFieldEntity> getFields(Integer projectId) {
+        return lambdaQuery().eq(MarkFieldEntity::getProjectId, projectId).list();
     }
 
-    public Integer saveByProject(Collection<MarkFieldEntity> entities, Integer projectId) {
-        var formId = projectService.getMarkFormId(projectId);
-        if (formId != null) {
-            saveByForm(entities, formId);
-        }
-        return formId;
-    }
-
-    public void saveByForm(Collection<MarkFieldEntity> entities, Integer formId) {
-        removeFields(formId);
+    public void save(Collection<MarkFieldEntity> entities, Integer projectId) {
+        clearFields(projectId);
         if (!entities.isEmpty()) {
             entities.forEach(x -> {
-                x.setFormId(formId);
+                x.setProjectId(projectId);
                 x.setId(null);
             });
             saveBatch(entities);
         }
     }
 
-    boolean removeFields(Integer formId) {
+    boolean clearFields(Integer projectId) {
         return lambdaUpdate()
-                .eq(MarkFieldEntity::getFormId, formId)
+                .eq(MarkFieldEntity::getProjectId, projectId)
                 .remove();
     }
 }

@@ -10,10 +10,10 @@ import java.io.Serializable;
 @Service
 public class ProjectService extends ServiceImpl<ProjectMapper, ProjectEntity> {
 
-    private final MarkFormService markFormService;
+    private final TplMarkFormService tplMarkFormService;
 
-    public ProjectService(MarkFormService markFormService) {
-        this.markFormService = markFormService;
+    public ProjectService(TplMarkFormService tplMarkFormService) {
+        this.tplMarkFormService = tplMarkFormService;
     }
 
     public boolean exist(Integer id) {
@@ -26,7 +26,7 @@ public class ProjectService extends ServiceImpl<ProjectMapper, ProjectEntity> {
         }
         var markFormId = project.getMarkFormId();
         if (markFormId == null) {
-            markFormId = markFormService.create();
+            markFormId = tplMarkFormService.create();
             lambdaUpdate()
                     .eq(ProjectEntity::getId, id)
                     .set(ProjectEntity::getMarkFormId, markFormId)
@@ -41,7 +41,7 @@ public class ProjectService extends ServiceImpl<ProjectMapper, ProjectEntity> {
         if (project == null) {
             return true;
         }
-        markFormService.removeUnNamed(project.getMarkFormId());
+        tplMarkFormService.removeUnNamed(project.getMarkFormId());
         return super.removeById(id);
     }
 }

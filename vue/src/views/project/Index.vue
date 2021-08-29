@@ -12,9 +12,15 @@
         <el-table-column label="操作">
           <template #default="scope">
             <el-space>
-              <el-button type="text" @click="handleEnter(scope.row)">
+              <router-link
+                :to="{
+                  name: 'workspace',
+                  params: { projectId: scope.row.id }
+                }"
+                target="_blank"
+              >
                 进入
-              </el-button>
+              </router-link>
               <el-dropdown>
                 <span class="el-dropdown-link">
                   更多<em class="el-icon-arrow-down el-icon--right"></em>
@@ -81,12 +87,6 @@ export default {
     handleAdd() {
       this.$refs.detail.open().then(() => {
         this.loadData()
-      })
-    },
-    handleEnter(project) {
-      this.$router.push({
-        name: 'workspace',
-        params: { projectId: project.id }
       })
     },
     handleEdit(project) {

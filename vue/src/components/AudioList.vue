@@ -11,15 +11,15 @@
     </el-upload>
     <el-table :data="files" stripe size="mini">
       <el-table-column prop="name" label="文件名" show-overflow-tooltip>
+        <template #default="scope">
+          <el-button type="text" @click="handleSelect(scope.row)">
+            {{ scope.row.name }}
+          </el-button>
+        </template>
       </el-table-column>
       <el-table-column :width="80">
         <template #default="scope">
           <el-space>
-            <span
-              @click="handleSelect(scope.row)"
-              class="iconfont icon-marker-open"
-            >
-            </span>
             <el-dropdown>
               <span class="el-dropdown-link">
                 <em class="el-icon-arrow-down el-icon--right"></em>

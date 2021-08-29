@@ -2,7 +2,7 @@
   <el-container>
     <el-header>
       项目 - {{ this.project.name }}
-      <el-button @click="handleTemplate">设置标记模板</el-button>
+      <el-button @click="handleTemplate">设置标注项</el-button>
     </el-header>
     <el-container>
       <el-aside width="500px">

@@ -67,3 +67,32 @@ CREATE TABLE public.mark (
 
 ALTER TABLE public.mark ADD CONSTRAINT mark_fk FOREIGN KEY (file_id) REFERENCES file(id) ON DELETE CASCADE;
 
+
+-- public.mark_field definition
+
+-- Drop table
+
+-- DROP TABLE public.mark_field;
+
+CREATE TABLE public.mark_field (
+                                       id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+                                       create_time timestamp(0) NOT NULL,
+                                       create_by varchar NULL,
+                                       update_time timestamp(0) NULL,
+                                       update_by varchar NULL,
+                                       project_id int4 NOT NULL,
+                                       field_name varchar NOT NULL,
+                                       field_display_text varchar NOT NULL,
+                                       field_type int4 NOT NULL,
+                                       required bool NOT NULL,
+                                       data_source varchar NULL,
+                                       sort int4 NULL,
+                                       CONSTRAINT mark_field_pk PRIMARY KEY (id)
+);
+
+-- public.mark_field foreign keys
+
+ALTER TABLE public.mark_field ADD CONSTRAINT mark_field_fk FOREIGN KEY (project_id) REFERENCES project(id) ON DELETE CASCADE;
+
+
+

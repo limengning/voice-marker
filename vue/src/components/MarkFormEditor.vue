@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="标注表单字段编辑"
+    title="标注项设置"
     v-model="dialogVisible"
     width="810px"
     :before-close="handleClose"
@@ -53,12 +53,9 @@ import { getFields, saveFields, saveFieldsByProject } from '@/api/markForm'
 const fieldTypes = [
   { label: '文本框', value: 'INPUT' },
   { label: '文本域', value: 'TEXT' },
-  { label: '标签', value: 'TAG' },
-  { label: '开关', value: 'SWITCH' },
-  { label: '单选', value: 'RADIO' },
-  { label: '多选', value: 'CHECKBOX' },
+  { label: '勾选', value: 'CHECKBOX' },
   { label: '下拉', value: 'SELECT' },
-  { label: '打分', value: 'RATE' }
+  { label: '标签', value: 'TAG' }
 ]
 let resolve
 export default {
@@ -99,7 +96,7 @@ export default {
       this.dialogVisible = false
     },
     handleAdd() {
-      this.fields.push({ fieldType: 1 })
+      this.fields.push({ fieldType: fieldTypes[0].value })
     }
   }
 }
