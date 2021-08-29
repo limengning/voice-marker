@@ -1,31 +1,29 @@
 <template>
   <div>
-    <el-upload
-      action=""
-      :before-upload="handleBeforeUpload"
-      :limit="1"
-      accept="audio/*"
-    >
-      <el-button size="small" icon="el-icon-upload2" type="primary">
-      </el-button>
-    </el-upload>
-    <el-table :data="files" stripe size="mini">
-      <el-table-column
-        :width="220"
-        prop="name"
-        label="文件名"
-        show-overflow-tooltip
+    <div class="upload-area">
+      <label>文件名</label>
+      <el-upload
+        action=""
+        :before-upload="handleBeforeUpload"
+        :limit="1"
+        accept="audio/*"
       >
+        <el-button size="mini" icon="el-icon-upload2" type="primary">
+        </el-button>
+      </el-upload>
+    </div>
+    <el-table :data="files" stripe size="mini" :show-header="false">
+      <el-table-column :width="200" prop="name" show-overflow-tooltip>
         <template #default="scope">
           <el-button size="mini" type="text" @click="handleSelect(scope.row)">
             {{ scope.row.name }}
           </el-button>
         </template>
       </el-table-column>
-      <el-table-column :width="80">
+      <el-table-column :width="50">
         <template #default="scope">
           <el-space>
-            <el-dropdown>
+            <el-dropdown size="mini">
               <span class="el-dropdown-link">
                 <em class="el-icon-arrow-down el-icon--right"></em>
               </span>
@@ -131,5 +129,16 @@ export default {
 .icon-marker-open {
   cursor: pointer;
   color: var(--el-color-primary);
+}
+.upload-area {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 10px;
+  height: 30px;
+}
+.upload-area label {
+  line-height: 30px;
+  height: 30px;
+  font-size: 14px;
 }
 </style>

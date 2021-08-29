@@ -1,15 +1,17 @@
 <template>
   <el-container>
-    <el-aside width="300px">
-      <el-header>
-        项目 - {{ this.project.name }}
-        <el-button @click="handleTemplate">设置标注项</el-button>
+    <el-aside width="300px" class="workspace-aside">
+      <el-header class="workspace-header">
+        <div class="workspace-logo">
+          项目 - {{ this.project.name }}
+          <el-button @click="handleTemplate">设置标注项</el-button>
+        </div>
       </el-header>
-      <el-container>
+      <el-container class="file-list">
         <audio-list @select="handleSelect" />
       </el-container>
     </el-aside>
-    <el-main>
+    <el-main class="workspace-main">
       <el-tabs v-model="openedTab" type="card" @tab-remove="handleFilesRemove">
         <el-tab-pane label="主页" :name="homeTabName" :closable="false">
           <home />
@@ -90,4 +92,25 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+.workspace-header {
+  background: var(--el-text-color-primary);
+  color: var(--el-color-info-light);
+}
+
+.workspace-logo {
+  height: var(--el-header-height);
+  line-height: var(--el-header-height);
+}
+.workspace-main {
+  padding: var(--el-main-padding) 0;
+}
+.workspace-aside {
+  border-right: 1px solid var(--el-border-color-light);
+  width: auto;
+  box-shadow: var(--el-box-shadow-light);
+}
+.file-list {
+  padding: 10px 0;
+}
+</style>
