@@ -13,7 +13,7 @@ public class MarkFieldEntity extends BaseEntity {
     private String fieldName;
     private String fieldDisplayText;
     private MarkFieldType fieldType;
-    private Boolean required;
+    private boolean required;
     private String dataSource;
     private Integer sort;
 }

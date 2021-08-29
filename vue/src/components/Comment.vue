@@ -12,7 +12,12 @@
           :key="field.id"
           :label="field.fieldDisplayText"
         >
-          <el-input v-model="form[field.fieldName]" v-if="edit"></el-input>
+          <mark-form-field
+            v-if="edit"
+            v-model="form[field.fieldName]"
+            :field="field"
+          >
+          </mark-form-field>
           <span v-else>{{ record[field.fieldName] }}</span>
         </el-form-item>
       </el-form>
@@ -22,8 +27,13 @@
 
 <script>
 import { mapGetters } from 'vuex'
+import MarkFormField from './MarkFormField'
+
 let resolve
 export default {
+  components: {
+    MarkFormField
+  },
   data() {
     return {
       record: null,

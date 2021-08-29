@@ -31,9 +31,14 @@
           </el-select>
         </template>
       </el-table-column>
-      <el-table-column label="是否必填" prop="required" width="120">
+      <el-table-column width="80">
         <template #default="scope">
-          <el-checkbox size="mini" v-model="scope.row.required" />
+          <el-button
+            size="mini"
+            @click="handleDelete(scope.$index)"
+            icon="el-icon-delete"
+          >
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -80,7 +85,7 @@ export default {
       saveMarkFields(this.project.id, this.fields).then(() => {
         this.$message.success('保存成功')
         this.handleClose()
-        resolve()
+        resolve(this.fields)
       })
     },
     handleClose() {
@@ -88,6 +93,9 @@ export default {
     },
     handleAdd() {
       this.fields.push({ fieldType: fieldTypes[0].value })
+    },
+    handleDelete(index) {
+      this.fields.splice(index, 1)
     }
   }
 }

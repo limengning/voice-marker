@@ -24,7 +24,7 @@
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
 import MarkFormEditor from '@/components/MarkFormEditor.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 
 export default {
   components: {
@@ -33,11 +33,14 @@ export default {
     MarkFormEditor
   },
   methods: {
+    ...mapMutations('workplace', ['setMarkFields']),
     handleSelect(file) {
       this.$refs.wavesurfer.loadFile(file)
     },
     handleTemplate() {
-      this.$refs.formEditor.open(this.project)
+      this.$refs.formEditor.open(this.project).then((fields) => {
+        this.setMarkFields(fields)
+      })
     }
   },
   computed: {

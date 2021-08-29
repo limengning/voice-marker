@@ -24,6 +24,6 @@ export function getMarkFields(projectId) {
   return request.get(`/project/${projectId}/field`)
 }
 
-export function saveMarkFields(data, projectId) {
+export function saveMarkFields(projectId, data) {
   return request.post(`/project/${projectId}/field`, data)
 }
