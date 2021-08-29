@@ -76,9 +76,14 @@ export default {
     handleFilesRemove(name) {
       const index = this.files.findIndex((f) => this.getTabName(f) === name)
       if (index !== -1) {
-        this.files.splice(index, 1)
+        const deleted = this.files.splice(index, 1)
         if (this.files.length === 0) {
           this.openedTab = HOME_TAB_NAME
+        } else {
+          if (this.getTabName(deleted) === this.openedTab) {
+            const selectedIndex = Math.max(this.files.length - 1, index)
+            this.openedTab = this.getTabName(this.files[selectedIndex])
+          }
         }
       }
     }
@@ -104,6 +109,7 @@ export default {
 }
 .workspace-main {
   padding: var(--el-main-padding) 0;
+  height: calc(100vh);
 }
 .workspace-aside {
   border-right: 1px solid var(--el-border-color-light);
