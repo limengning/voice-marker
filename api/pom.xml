@@ -86,7 +86,7 @@
                 <configuration>
                     <url>jdbc:postgresql://localhost:5432/voice-marker</url>
                     <user>postgres</user>
-                    <password>FOzVhNc)LIz6b3^Pw~</password>
+                    <password>POSTGRES@local</password>
                 </configuration>
                 <dependencies>
                     <dependency>
