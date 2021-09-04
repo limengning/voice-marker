@@ -5,7 +5,7 @@ spring:
     driver-class-name: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/voice-marker
     username: postgres
-    password: FOzVhNc)LIz6b3^Pw~
+    password: POSTGRES@local
   servlet:
     multipart:
       max-file-size: 15MB
@@ -18,5 +18,5 @@ mybatis-plus:
 minio:
   url: http://localhost:9000
   accessKey: minio
-  secretKey: wLiIgRc%qiC7~9qca6^
+  secretKey: MINIO@local
   bucketName: voice-marker
