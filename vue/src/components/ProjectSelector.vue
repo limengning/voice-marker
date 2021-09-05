@@ -1,6 +1,6 @@
 <template>
   <el-dialog v-model="dialogVisible" destroy-on-close>
-    <el-table :data="projects">
+    <el-table :data="projects" size="mini">
       <el-table-column prop="name">
         <template #default="scope">
           <el-space>

@@ -1,6 +1,8 @@
 <template>
-  <project-editor ref="editor" />
-  <project-selector ref="selector" />
+  <div class="content">
+    <project-editor ref="editor" />
+    <project-selector ref="selector" />
+  </div>
 </template>
 
 <script>
@@ -33,4 +35,7 @@ export default {
 </script>
 
 <style>
+.content {
+  line-height: initial;
+}
 </style>
