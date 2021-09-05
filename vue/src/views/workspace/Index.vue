@@ -31,7 +31,7 @@
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
 import WorkspaceTitle from '@/components/WorkspaceTitle.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import Welcome from './Welcome'
 const HOME_TAB_NAME = 'home'
 
@@ -42,6 +42,7 @@ export default {
     WorkspaceTitle,
     Welcome
   },
+  props: ['projectId'],
   data() {
     return {
       files: [],
@@ -50,6 +51,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('workplace', ['loadProject']),
     getTabName(file) {
       return 'file' + file.id
     },
@@ -79,6 +81,11 @@ export default {
   },
   computed: {
     ...mapGetters('workplace', ['hasProject'])
+  },
+  watch: {
+    projectId(id) {
+      this.loadProject(id)
+    }
   }
 }
 </script>

@@ -17,7 +17,6 @@
                   name: 'workspace',
                   params: { projectId: scope.row.id }
                 }"
-                target="_blank"
               >
                 打开
               </router-link>
@@ -26,8 +25,8 @@
                   更多<em class="el-icon-arrow-down el-icon--right"></em>
                 </span>
                 <template #dropdown>
-                  <el-dropdown-menu
-                    ><el-dropdown-item>
+                  <el-dropdown-menu>
+                    <el-dropdown-item>
                       <el-button @click="handleEdit(scope.row)" type="text">
                         编辑
                       </el-button>

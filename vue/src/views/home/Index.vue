@@ -7,21 +7,36 @@
         </el-aside>
         <el-main class="main">
           <el-space direction="vertical">
-            <el-button icon="el-icon-folder-add">新建项目</el-button>
-            <el-button icon="el-icon-folder-opened">打开项目</el-button>
+            <el-button icon="el-icon-folder-add" @click="handleAdd">
+              新建项目
+            </el-button>
+            <el-button icon="el-icon-folder-opened" @click="handleOpen">
+              打开项目
+            </el-button>
           </el-space>
         </el-main>
       </el-container>
     </el-card>
+    <project-manage ref="manage" />
   </div>
 </template>
 
 <script>
 import Banner from '@/components/Banner'
+import ProjectManage from '@/components/ProjectManage'
 
 export default {
   components: {
-    Banner
+    Banner,
+    ProjectManage
+  },
+  methods: {
+    handleAdd() {
+      this.$refs.manage.add()
+    },
+    handleOpen() {
+      this.$refs.manage.open()
+    }
   }
 }
 </script>
