@@ -9,10 +9,12 @@
             <el-dropdown-item :command="handleTemplate">
               设置标注项
             </el-dropdown-item>
-            <el-dropdown-item :command="handleRename">
-              重命名
+            <el-dropdown-item :command="handleEdit">
+              编辑项目
             </el-dropdown-item>
-            <el-dropdown-item :command="handleDelete"> 删除 </el-dropdown-item>
+            <el-dropdown-item :command="handleMore">
+              切换项目
+            </el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -44,8 +46,8 @@ export default {
         this.setMarkFields(fields)
       })
     },
-    handleRename() {},
-    handleDelete() {}
+    handleEdit() {},
+    handleMore() {}
   }
 }
 </script>

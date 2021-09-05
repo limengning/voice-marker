@@ -19,7 +19,7 @@
                 }"
                 target="_blank"
               >
-                进入
+                打开
               </router-link>
               <el-dropdown>
                 <span class="el-dropdown-link">

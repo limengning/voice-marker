@@ -3,9 +3,15 @@ import store from './store'
 
 const Project = () => import('@/views/project/Index')
 const Workspace = () => import('@/views/workspace/Index')
+const Home = () => import('@/views/home/Index')
 
 const routes = [
-  { path: '/', redirect: '/project' },
+  { path: '/', redirect: '/home' },
+  {
+    name: 'home',
+    path: '/home',
+    component: Home
+  },
   {
     name: 'project',
     path: '/project',
@@ -13,11 +19,10 @@ const routes = [
   },
   {
     name: 'workspace',
-    path: '/project/:projectId/workspace',
+    path: '/workspace',
     component: Workspace,
     beforeEnter: (to, from, next) => {
-      console.log(to.params.projectId)
-      store.dispatch('workplace/loadProject', to.params.projectId)
+      store.dispatch('workplace/loadProject', to.query.projectId)
         .then(next)
     }
   }

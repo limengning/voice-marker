@@ -23,17 +23,23 @@ const getters = {
   },
   project: state => {
     return state.project
-  }
+  },
+  hasProject: state => state.project != null
 }
 const actions = {
   async loadProject({ commit }, id) {
-    try {
-      const project = await getProject(id)
-      commit('setProject', project)
-      const markFields = await getMarkFields(id)
-      commit('setMarkFields', markFields)
-    } catch (e) {
-      console.error(e)
+    if (id) {
+      try {
+        const project = await getProject(id)
+        commit('setProject', project)
+        const markFields = await getMarkFields(id)
+        commit('setMarkFields', markFields)
+      } catch (e) {
+        console.error(e)
+        commit('setProject', null)
+        commit('setMarkFields', [])
+      }
+    } else {
       commit('setProject', null)
       commit('setMarkFields', [])
     }

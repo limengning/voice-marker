@@ -11,7 +11,7 @@
     <el-main class="workspace-main">
       <el-tabs v-model="openedTab" type="card" @tab-remove="handleFilesRemove">
         <el-tab-pane label="主页" :name="homeTabName" :closable="false">
-          <home />
+          <welcome />
         </el-tab-pane>
         <el-tab-pane
           v-for="file in files"
@@ -31,7 +31,8 @@
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
 import WorkspaceTitle from '@/components/WorkspaceTitle.vue'
-import Home from './Home'
+import { mapGetters } from 'vuex'
+import Welcome from './Welcome'
 const HOME_TAB_NAME = 'home'
 
 export default {
@@ -39,7 +40,7 @@ export default {
     Wavesurfer,
     AudioList,
     WorkspaceTitle,
-    Home
+    Welcome
   },
   data() {
     return {
@@ -75,6 +76,9 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters('workplace', ['hasProject'])
   }
 }
 </script>
