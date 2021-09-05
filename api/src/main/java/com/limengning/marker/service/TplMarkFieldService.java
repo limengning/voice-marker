@@ -11,15 +11,6 @@ import java.util.List;
 @Service
 public class TplMarkFieldService extends ServiceImpl<TplMarkFieldMapper, TplMarkFieldEntity> {
 
-    private final ProjectService projectService;
-    private final TplMarkFormService tplMarkFormService;
-
-
-    public TplMarkFieldService(ProjectService projectService, TplMarkFormService tplMarkFormService) {
-        this.projectService = projectService;
-        this.tplMarkFormService = tplMarkFormService;
-    }
-
     public List<TplMarkFieldEntity> getFields(Integer formId) {
         return lambdaQuery().eq(TplMarkFieldEntity::getFormId, formId).list();
     }
