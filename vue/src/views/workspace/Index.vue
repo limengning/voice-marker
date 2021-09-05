@@ -2,10 +2,7 @@
   <el-container>
     <el-aside width="300px" class="workspace-aside">
       <el-header class="workspace-header">
-        <div class="workspace-logo">
-          项目 - {{ this.project.name }}
-          <el-button @click="handleTemplate">设置标注项</el-button>
-        </div>
+        <workspace-title />
       </el-header>
       <el-container class="file-list">
         <audio-list @select="handleSelect" />
@@ -27,24 +24,21 @@
         </el-tab-pane>
       </el-tabs>
     </el-main>
-    <mark-form-editor ref="formEditor" />
   </el-container>
 </template>
 
 <script>
 import Wavesurfer from '@/components/Wavesurfer.vue'
 import AudioList from '@/components/AudioList.vue'
-import MarkFormEditor from '@/components/MarkFormEditor.vue'
+import WorkspaceTitle from '@/components/WorkspaceTitle.vue'
 import Home from './Home'
-import { mapGetters, mapMutations } from 'vuex'
-
 const HOME_TAB_NAME = 'home'
 
 export default {
   components: {
     Wavesurfer,
     AudioList,
-    MarkFormEditor,
+    WorkspaceTitle,
     Home
   },
   data() {
@@ -58,7 +52,6 @@ export default {
     getTabName(file) {
       return 'file' + file.id
     },
-    ...mapMutations('workplace', ['setMarkFields']),
     handleSelect(file) {
       const index = this.files.findIndex((f) => f.id === file.id)
       if (index !== -1) {
@@ -67,11 +60,6 @@ export default {
         this.files.push(file)
         this.openedTab = this.getTabName(file)
       }
-    },
-    handleTemplate() {
-      this.$refs.formEditor.open(this.project).then((fields) => {
-        this.setMarkFields(fields)
-      })
     },
     handleFilesRemove(name) {
       const index = this.files.findIndex((f) => this.getTabName(f) === name)
@@ -87,12 +75,6 @@ export default {
         }
       }
     }
-  },
-  computed: {
-    ...mapGetters('workplace', ['project']),
-    tabs() {
-      return [{}, this.files]
-    }
   }
 }
 </script>
@@ -101,12 +83,10 @@ export default {
 .workspace-header {
   background: var(--el-text-color-primary);
   color: var(--el-color-info-light);
-}
-
-.workspace-logo {
   height: var(--el-header-height);
   line-height: var(--el-header-height);
 }
+
 .workspace-main {
   padding: var(--el-main-padding) 0;
   height: calc(100vh);
