@@ -81,12 +81,12 @@ export default {
     },
     handleCommit(e) {
       e.preventDefault()
-      this.$refs.form.validate((valid) => {
+      this.$refs.form.validate(async (valid) => {
         if (valid) {
-          this.saveProject(this.form).then((success) => {
-            if (success) {
+          this.saveProject(this.form).then((id) => {
+            if (id) {
               this.dialogVisible = false
-              resolve()
+              resolve(id)
             }
           })
         }

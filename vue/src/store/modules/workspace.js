@@ -56,14 +56,14 @@ const actions = {
   },
   async saveProject({ commit, state }, project) {
     try {
-      saveProject(project)
+      const id = await saveProject(project)
       if (state.project && state.project.id === project.id) {
         commit('setProject', project)
       }
-      return true
+      return id || project.id
     } catch (e) {
       console.error(e)
-      return false
+      return 0
     }
   }
 }
