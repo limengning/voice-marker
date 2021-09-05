@@ -95,7 +95,6 @@ export default {
   background: var(--el-text-color-primary);
   color: var(--el-color-info-light);
   height: var(--el-header-height);
-  line-height: var(--el-header-height);
 }
 
 .workspace-main {

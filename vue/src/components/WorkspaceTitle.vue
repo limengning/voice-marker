@@ -70,6 +70,9 @@ export default {
   display: flex;
   justify-content: space-between;
 }
+.title label {
+  line-height: var(--el-header-height);
+}
 .setting-icon {
   color: #fff;
   font-size: 1.2rem;
