@@ -56,11 +56,13 @@ public class ProjectService extends ServiceImpl<ProjectMapper, ProjectEntity> {
         ProjectEntity project = getById(projectId);
         response.addHeader("Content-Type", "application/octet-stream");
         response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(project.getName(), StandardCharsets.UTF_8) + ".csv");
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
         List<MarkFieldEntity> markFields = markFieldService.getFields(projectId);
         long pageIndex = 0L;
         long pageSize = 100L;
         PrintWriter writer = response.getWriter();
-        StringBuilder builder = new StringBuilder("项目名称,文件名称,开始,结束");
+        StringBuilder builder = new StringBuilder("\uFEFF");
+        builder.append("项目名称,文件名称,开始,结束");
         for (MarkFieldEntity field : markFields) {
             builder.append(",");
             builder.append(field.getFieldDisplayText());
