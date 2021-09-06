@@ -1,11 +1,14 @@
 package com.limengning.marker.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.conditions.query.LambdaQueryChainWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.limengning.marker.config.MinioConfiguration;
 import com.limengning.marker.entity.FileEntity;
+import com.limengning.marker.entity.ProjectEntity;
 import com.limengning.marker.mapper.FileMapper;
+import com.limengning.marker.mapper.ProjectMapper;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +23,11 @@ import java.util.stream.Collectors;
 public class FileService extends ServiceImpl<FileMapper, FileEntity> {
 
     private final MinioConfiguration minioConfiguration;
-    private final ProjectService projectService;
+    private final ProjectMapper projectMapper;
 
-    public FileService(MinioConfiguration minioConfiguration,
-                       ProjectService projectService) {
+    public FileService(MinioConfiguration minioConfiguration, ProjectMapper projectMapper) {
         this.minioConfiguration = minioConfiguration;
-        this.projectService = projectService;
+        this.projectMapper = projectMapper;
     }
 
     public IPage<FileEntity> page(long pageIndex, long pageSize, Integer projectId) {
@@ -35,7 +37,7 @@ public class FileService extends ServiceImpl<FileMapper, FileEntity> {
     }
 
     public FileEntity save(InputStream inputStream, String contentType, String fileName, Integer projectId) {
-        if (!projectService.exist(projectId)) {
+        if (!projectExist(projectId)) {
             throw new RuntimeException("项目不存在");
         }
         var src = upload(inputStream, contentType);
@@ -46,6 +48,11 @@ public class FileService extends ServiceImpl<FileMapper, FileEntity> {
         file.setProjectId(projectId);
         save(file);
         return file;
+    }
+
+    private boolean projectExist(Integer projectId) {
+        LambdaQueryChainWrapper<ProjectEntity> queryChainWrapper = new LambdaQueryChainWrapper<>(projectMapper);
+        return queryChainWrapper.eq(ProjectEntity::getId, projectId).oneOpt().isPresent();
     }
 
     private String getUniqueFileName(Integer projectId, String fileName) {
