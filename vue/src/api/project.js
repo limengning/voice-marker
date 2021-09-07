@@ -1,5 +1,7 @@
 import request from './request'
 
+const apiUrl = process.env.VUE_APP_API_URL
+
 export function getProjects(params) {
   return request.get('/project/', { params })
 }
@@ -26,4 +28,9 @@ export function getMarkFields(projectId) {
 
 export function saveMarkFields(projectId, data) {
   return request.post(`/project/${projectId}/field`, data)
+}
+
+
+export function exportProject(projectId) {
+  window.open(`${apiUrl}/project/${projectId}/export`, 'blank')
 }

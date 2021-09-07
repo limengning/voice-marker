@@ -12,6 +12,9 @@
             <el-dropdown-item :command="'handleEdit'">
               编辑项目
             </el-dropdown-item>
+            <el-dropdown-item :command="'handleExport'">
+              导出项目
+            </el-dropdown-item>
             <el-dropdown-item divided :command="'handleAdd'">
               新建项目
             </el-dropdown-item>
@@ -32,6 +35,7 @@ import { mapGetters, mapMutations } from 'vuex'
 import { Setting } from '@element-plus/icons'
 import MarkFormEditor from '@/components/MarkFormEditor.vue'
 import ProjectManage from '@/components/ProjectManage'
+import { exportProject } from '@/api/project'
 
 export default {
   components: {
@@ -60,6 +64,9 @@ export default {
     },
     handleOpen() {
       this.$refs.manage.open()
+    },
+    handleExport() {
+      exportProject(this.project.id)
     }
   }
 }
