@@ -27,6 +27,18 @@
             </el-button>
           </template>
         </el-table-column>
+        <el-table-column width="70">
+          <template #default="scope">
+            <el-button
+              size="mini"
+              plain
+              type="primary"
+              icon="el-icon-video-play"
+              @click="handleRegionPlay(scope.row.id)"
+            >
+            </el-button>
+          </template>
+        </el-table-column>
         <el-table-column type="index" label="#"></el-table-column>
 
         <el-table-column prop="start" label="开始(s)" width="100">
@@ -37,25 +49,32 @@
         <el-table-column prop="end" label="结束(s)" width="100">
           <template #default="scope"> {{ scope.row.end.toFixed(2) }} </template>
         </el-table-column>
+
+        <el-table-column
+          v-for="field in markFields"
+          :key="field.id"
+          :label="field.fieldDisplayText"
+        >
+          <template #default="scope">
+            <div v-if="scope.row.comment">
+            {{scope.row}}
+            {{field.fieldName}}
+            {{scope.row.comment[field.fieldName]}}
+            <span v-if="scope.row.locked">
+              {{ scope.row.comment[field.fieldName] }}
+            </span>
+            <mark-form-field
+              v-else
+              v-model="scope.row.comment[field.fieldName]"
+              :field="field"
+            >
+            </mark-form-field>
+            </div>
+          </template>
+        </el-table-column>
+
         <el-table-column label="操作" width="260">
           <template #default="scope">
-            <el-button
-              size="mini"
-              plain
-              type="primary"
-              icon="el-icon-video-play"
-              @click="handleRegionPlay(scope.row.id)"
-            >
-            </el-button>
-            <el-button
-              size="mini"
-              plain
-              type="info"
-              icon="el-icon-chat-line-square"
-              @click="handleComment(scope.row)"
-            >
-            </el-button>
-
             <el-dropdown>
               <span class="el-dropdown-link">
                 更多<em class="el-icon-arrow-down el-icon--right"></em>
@@ -90,12 +109,12 @@
       </el-table>
     </el-col>
   </el-row>
-  <comment ref="marker"></comment>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { saveMarks, getMarks } from '@/api/mark'
-import Comment from './Comment'
+import MarkFormField from './MarkFormField'
 
 let fileId
 function slimRegion(region) {
@@ -113,7 +132,7 @@ function toRequest(region) {
     end: region.end,
     locked: region.locked,
     fileId: fileId,
-    comment: region.comment ? JSON.stringify(region.comment) : null
+    comment: region.comment ? JSON.stringify(region.comment) : '{}'
   }
 }
 function fromResponse(region) {
@@ -122,7 +141,7 @@ function fromResponse(region) {
     start: region.start,
     end: region.end,
     locked: region.locked,
-    comment: region.comment ? JSON.parse(region.comment) : null
+    comment: region.comment ? JSON.parse(region.comment) : {}
   }
 }
 const regionDefaultColor = 'rgba(0, 0, 0, 0.1)'
@@ -130,7 +149,7 @@ const regionSelectColor = 'rgba(0, 0, 0, 0.3)'
 
 export default {
   components: {
-    Comment
+    MarkFormField
   },
   data() {
     return {
@@ -183,13 +202,6 @@ export default {
       if (index === -1) return
       const region = this.regions[index]
       if (region.locked) return
-      if (region.comment) {
-        this.$message.warning({
-          message: '存在标注信息不能删除，请先清除标注信息',
-          type: 'warning'
-        })
-        return
-      }
       if (this.record && this.record.id === region.id) this.record = null
       this.regions.splice(index, 1)
       this.wavesurfer.regions.list[id].remove()
@@ -197,6 +209,7 @@ export default {
     handleRegionCreated(region) {
       region = slimRegion(region)
       if (this.regions.findIndex((x) => x.id === region.id) == -1) {
+        region.comment = this.createComment()
         this.regions.push(region)
       }
     },
@@ -213,7 +226,7 @@ export default {
       })
     },
     handleCommentClear(region) {
-      region.comment = null
+      region.comment = {}
     },
     save() {
       return saveMarks(this.regions.map(toRequest), fileId)
@@ -231,7 +244,17 @@ export default {
           }
         })
         .catch(() => this.$message.error('加载标注失败'))
+    },
+    createComment() {
+      const comment = {}
+      for (let field of this.markFields) {
+        comment[field.fieldName] = ''
+      }
+      return comment
     }
+  },
+  computed: {
+    ...mapGetters('workplace', ['markFields'])
   }
 }
 </script>
