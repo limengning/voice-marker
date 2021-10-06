@@ -11,7 +11,6 @@ import lombok.Setter;
 public class MarkFieldEntity extends BaseEntity {
     private Integer projectId;
     private String fieldName;
-    private String fieldDisplayText;
     private MarkFieldType fieldType;
     private boolean required;
     private String dataSource;

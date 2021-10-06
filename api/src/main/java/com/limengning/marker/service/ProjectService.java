@@ -65,7 +65,7 @@ public class ProjectService extends ServiceImpl<ProjectMapper, ProjectEntity> {
         builder.append("项目名称,文件名称,开始,结束");
         for (MarkFieldEntity field : markFields) {
             builder.append(",");
-            builder.append(field.getFieldDisplayText());
+            builder.append(field.getFieldName());
         }
         builder.append("\n");
         writer.write(builder.toString());

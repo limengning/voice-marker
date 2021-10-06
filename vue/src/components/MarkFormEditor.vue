@@ -8,12 +8,7 @@
     <el-button size="mini" @click="handleAdd">添加</el-button>
     <el-table size="mini" :data="fields">
       <el-table-column type="index" width="50"> </el-table-column>
-      <el-table-column label="显示名" prop="fieldDisplayText" width="240">
-        <template #default="scope">
-          <el-input size="mini" v-model="scope.row.fieldDisplayText" />
-        </template>
-      </el-table-column>
-      <el-table-column label="字段名" prop="fieldName" width="240">
+      <el-table-column label="名称" prop="滴" width="240">
         <template #default="scope">
           <el-input size="mini" v-model="scope.row.fieldName" />
         </template>

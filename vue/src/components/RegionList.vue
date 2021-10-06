@@ -53,7 +53,7 @@
         <el-table-column
           v-for="field in markFields"
           :key="field.id"
-          :label="field.fieldDisplayText"
+          :label="field.fieldName"
         >
           <template #default="scope">
             <div v-if="scope.row.comment">

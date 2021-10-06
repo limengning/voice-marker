@@ -10,7 +10,7 @@
         <el-form-item
           v-for="field in markFields"
           :key="field.id"
-          :label="field.fieldDisplayText"
+          :label="field.fieldName"
         >
           <mark-form-field
             v-if="edit"

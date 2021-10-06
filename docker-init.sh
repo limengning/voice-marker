@@ -5,4 +5,4 @@ docker run -p 9000:9000 -p 9001:9001 --name local-minio \
 
 docker run -p 5432:5432 --name local-postgres \
  -e "POSTGRES_PASSWORD=POSTGRES@local" \
- -d postgres
+ -d postgres:13
