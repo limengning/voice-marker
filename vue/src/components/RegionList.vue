@@ -56,19 +56,16 @@
           :label="field.fieldName"
         >
           <template #default="scope">
-            <div v-if="scope.row.comment">
-            {{scope.row}}
-            {{field.fieldName}}
-            {{scope.row.comment[field.fieldName]}}
-            <span v-if="scope.row.locked">
-              {{ scope.row.comment[field.fieldName] }}
-            </span>
-            <mark-form-field
-              v-else
-              v-model="scope.row.comment[field.fieldName]"
-              :field="field"
-            >
-            </mark-form-field>
+            <div>
+              <span v-if="scope.row.locked">
+                {{ scope.row.comment[field.fieldName] }}
+              </span>
+              <mark-form-field
+                v-else
+                v-model="scope.row.comment[field.fieldName]"
+                :field="field"
+              >
+              </mark-form-field>
             </div>
           </template>
         </el-table-column>
@@ -122,7 +119,8 @@ function slimRegion(region) {
     id: region.id,
     start: region.start,
     end: region.end,
-    locked: false
+    locked: false,
+    comment: region.comment
   }
 }
 function toRequest(region) {
@@ -207,9 +205,9 @@ export default {
       this.wavesurfer.regions.list[id].remove()
     },
     handleRegionCreated(region) {
+      region.comment = this.createComment()
       region = slimRegion(region)
       if (this.regions.findIndex((x) => x.id === region.id) == -1) {
-        region.comment = this.createComment()
         this.regions.push(region)
       }
     },

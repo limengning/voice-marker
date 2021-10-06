@@ -2,24 +2,20 @@
   <span>
     <el-input
       v-if="field.fieldType === 'INPUT'"
-      :model-value="value"
-      @change="handleChange"
+      v-model="value"
     />
     <el-input
       type="textarea"
       v-if="field.fieldType === 'TEXT'"
-      :model-value="value"
-      @change="handleChange"
+      v-model="value"
     />
     <el-checkbox
       v-if="field.fieldType === 'CHECKBOX'"
-      :model-value="value"
-      @change="handleChange"
+      v-model="value"
     />
     <el-select
       v-if="field.fieldType === 'SELECT'"
-      :model-value="value"
-      @change="handleChange"
+      v-model="value"
     >
       <el-option
         v-for="item in JSON.parse(field.dataSource)"
@@ -31,8 +27,7 @@
     </el-select>
     <tag-field
       v-if="field.fieldType === 'TAG'"
-      :model-value="value"
-      @change="handleChange"
+      v-model="value"
     />
   </span>
 </template>
@@ -41,13 +36,16 @@
 import TagField from './TagField.vue'
 export default {
   components: { TagField },
-  props: {
-    field: Object,
-    modelValue: Object
-  },
-  methods: {
-    handleChange(value) {
-      this.$emit('update:modelValue', value)
+  props: ['field', 'modelValue'],
+  emits: ['update:modelValue'],
+  computed: {
+    value: {
+      get() {
+        return this.modelValue
+      },
+      set(value) { 
+        this.$emit('update:modelValue', value)
+      }
     }
   }
 }
