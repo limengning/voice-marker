@@ -11,7 +11,6 @@ import lombok.Setter;
 public class TplMarkFieldEntity extends BaseEntity {
     private Integer formId;
     private String fieldName;
-    private String fieldDisplayText;
     private MarkFieldType fieldType;
     private Boolean required;
     private String dataSource;

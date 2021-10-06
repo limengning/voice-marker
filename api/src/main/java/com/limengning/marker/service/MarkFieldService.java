@@ -25,8 +25,8 @@ public class MarkFieldService extends ServiceImpl<MarkFieldMapper, MarkFieldEnti
         }
     }
 
-    boolean clearFields(Integer projectId) {
-        return lambdaUpdate()
+    void clearFields(Integer projectId) {
+        lambdaUpdate()
                 .eq(MarkFieldEntity::getProjectId, projectId)
                 .remove();
     }
