@@ -1,14 +1,17 @@
 body {
-    margin: 0;
+  margin: 0;
 }
 
 .el-button.active {
-    outline: 0;
-    color: var(--el-color-primary);
-    border-color: var(--el-color-primary-light-7);
-    background-color: var(--el-color-primary-light-9);
+  outline: 0;
+  color: var(--el-color-primary);
+  border-color: var(--el-color-primary-light-7);
+  background-color: var(--el-color-primary-light-9);
 }
 
 .el-button--mini .iconfont {
-    font-size: 12px;
+  font-size: 12px;
+}
+.el-drawer {
+  padding: var(--el-drawer-padding-primary);
 }

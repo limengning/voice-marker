@@ -54,6 +54,7 @@
           v-for="field in markFields"
           :key="field.id"
           :label="field.fieldName"
+          width="240"
         >
           <template #default="scope">
             <div>
@@ -70,37 +71,16 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="操作" width="260">
+        <el-table-column width="80">
           <template #default="scope">
-            <el-dropdown>
-              <span class="el-dropdown-link">
-                更多<em class="el-icon-arrow-down el-icon--right"></em>
-              </span>
-              <template #dropdown>
-                <el-dropdown-menu>
-                  <el-dropdown-item>
-                    <el-button
-                      v-if="!scope.row.locked"
-                      @click="handleCommentClear(scope.row)"
-                      size="mini"
-                      type="text"
-                    >
-                      清除标注
-                    </el-button>
-                  </el-dropdown-item>
-                  <el-dropdown-item>
-                    <el-button
-                      v-if="!scope.row.locked"
-                      @click="handleRegionDelete(scope.row.id)"
-                      size="mini"
-                      type="text"
-                    >
-                      删除
-                    </el-button>
-                  </el-dropdown-item>
-                </el-dropdown-menu>
-              </template>
-            </el-dropdown>
+            <el-button
+              v-if="!scope.row.locked"
+              @click="handleRegionDelete(scope.row.id)"
+              plain
+              size="mini"
+              icon="el-icon-delete"
+            >
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
