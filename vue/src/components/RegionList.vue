@@ -1,6 +1,7 @@
 <template>
   <el-row :gutter="20">
     <el-col :span="24">
+      {{ regions }}
       <el-table
         :data="regions"
         ref="regionTable"
@@ -94,15 +95,6 @@ import { saveMarks, getMarks } from '@/api/mark'
 import MarkFormField from './MarkFormField'
 
 let fileId
-function slimRegion(region) {
-  return {
-    id: region.id,
-    start: region.start,
-    end: region.end,
-    locked: false,
-    comment: region.comment
-  }
-}
 function toRequest(region) {
   return {
     regionId: region.id,
@@ -184,27 +176,24 @@ export default {
       this.regions.splice(index, 1)
       this.wavesurfer.regions.list[id].remove()
     },
-    handleRegionCreated(region) {
-      region.comment = this.createComment()
-      region = slimRegion(region)
-      if (this.regions.findIndex((x) => x.id === region.id) == -1) {
+    handleRegionCreated(r) {
+      if (this.regions.findIndex((x) => x.id === r.id) == -1) {
+        const region = {
+          id: region.id,
+          start: region.start,
+          end: region.end,
+          locked: false,
+          comment: this.createComment()
+        }
         this.regions.push(region)
       }
     },
-    handleRegionUpdateEnd(region) {
-      region = slimRegion(region)
-      const index = this.regions.findIndex((x) => x.id === region.id)
-      this.regions[index] = region
-      this.regions = [...this.regions]
-    },
-    handleComment(region) {
-      this.$refs.marker.open(region).then((form) => {
-        const r = this.regions.find((x) => x.id === form.id)
-        r.comment = form.comment
-      })
-    },
-    handleCommentClear(region) {
-      region.comment = {}
+    handleRegionUpdateEnd(r) {
+      const region = this.regions.find((x) => x.id === r.id)
+      if (region) {
+        region.start = r.start
+        region.end = r.end
+      }
     },
     save() {
       return saveMarks(this.regions.map(toRequest), fileId)
