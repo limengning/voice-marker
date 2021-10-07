@@ -179,9 +179,9 @@ export default {
     handleRegionCreated(r) {
       if (this.regions.findIndex((x) => x.id === r.id) == -1) {
         const region = {
-          id: region.id,
-          start: region.start,
-          end: region.end,
+          id: r.id,
+          start: r.start,
+          end: r.end,
           locked: false,
           comment: this.createComment()
         }
